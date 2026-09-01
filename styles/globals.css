@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Imports for custom fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Base styling */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-cb-black text-cb-bone;
+  font-feature-settings: 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-display font-bold tracking-tight;
+}
+
+h1 {
+  @apply text-4xl md:text-6xl;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl;
+}
+
+/* Utility classes */
+.text-mono {
+  @apply font-mono text-sm font-medium tracking-wider;
+}
+
+.btn-primary {
+  @apply rounded bg-cb-crimson px-6 py-3 font-semibold text-cb-black transition hover:bg-cb-crimson-dark focus:outline-none focus:ring-2 focus:ring-cb-crimson focus:ring-offset-2 focus:ring-offset-cb-black;
+}
+
+.btn-secondary {
+  @apply rounded border border-cb-steel bg-transparent px-6 py-3 font-semibold text-cb-bone transition hover:bg-cb-steel focus:outline-none focus:ring-2 focus:ring-cb-steel;
+}
+
+.btn-ghost {
+  @apply rounded bg-transparent px-4 py-2 text-cb-bone transition hover:bg-cb-dark focus:outline-none focus:ring-2 focus:ring-cb-steel;
+}
+
+.card {
+  @apply rounded border border-cb-steel bg-cb-charcoal p-6 shadow-cb-sm;
+}
+
+.input-field {
+  @apply rounded border border-cb-steel bg-cb-dark px-4 py-2 text-cb-bone placeholder-cb-gray transition focus:border-cb-crimson focus:outline-none focus:ring-1 focus:ring-cb-crimson;
+}
+
+.label-text {
+  @apply block text-sm font-medium text-cb-gray;
+}
+
+.grid-lines {
+  background-image: linear-gradient(
+    0deg,
+    transparent 24%,
+    rgba(220, 20, 60, 0.05) 25%,
+    rgba(220, 20, 60, 0.05) 26%,
+    transparent 27%,
+    transparent 74%,
+    rgba(220, 20, 60, 0.05) 75%,
+    rgba(220, 20, 60, 0.05) 76%,
+    transparent 77%,
+    transparent
+  );
+  background-size: 50px 50px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-cb-charcoal;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded bg-cb-steel hover:bg-cb-gray;
+}
+
+/* Focus styles */
+*:focus-visible {
+  @apply outline-none ring-2 ring-cb-crimson ring-offset-2 ring-offset-cb-black;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* react-big-calendar dark theme overrides (admin only) */
+.cb-calendar {
+  --rbc-border: theme('colors.cb-steel');
+  color: theme('colors.cb-bone');
+}
+.cb-calendar .rbc-calendar,
+.cb-calendar .rbc-month-view,
+.cb-calendar .rbc-time-view,
+.cb-calendar .rbc-agenda-view {
+  background: theme('colors.cb-charcoal');
+  border-color: theme('colors.cb-steel');
+}
+.cb-calendar .rbc-off-range-bg {
+  background: theme('colors.cb-black');
+}
+.cb-calendar .rbc-today {
+  background: rgba(220, 20, 60, 0.08);
+}
+.cb-calendar .rbc-header,
+.cb-calendar .rbc-time-header-content,
+.cb-calendar .rbc-time-content,
+.cb-calendar .rbc-month-row,
+.cb-calendar .rbc-day-bg,
+.cb-calendar .rbc-time-slot,
+.cb-calendar .rbc-timeslot-group,
+.cb-calendar .rbc-agenda-table {
+  border-color: theme('colors.cb-steel') !important;
+  color: theme('colors.cb-bone');
+}
+.cb-calendar .rbc-agenda-table tbody > tr > td {
+  border-color: theme('colors.cb-steel');
+  color: theme('colors.cb-bone');
+}
+.cb-calendar .rbc-toolbar button {
+  color: theme('colors.cb-bone');
+  border-color: theme('colors.cb-steel');
+}
+.cb-calendar .rbc-toolbar button:hover,
+.cb-calendar .rbc-toolbar button.rbc-active {
+  background: theme('colors.cb-crimson');
+  color: theme('colors.cb-black');
+  border-color: theme('colors.cb-crimson');
+}
+.cb-calendar .rbc-off-range {
+  color: theme('colors.cb-steel');
+}
+.cb-event-code {
+  background-color: theme('colors.cb-electric') !important;
+  color: theme('colors.cb-black') !important;
+  border: none !important;
+}
+.cb-event-combat {
+  background-color: theme('colors.cb-crimson') !important;
+  color: theme('colors.cb-bone') !important;
+  border: none !important;
+}

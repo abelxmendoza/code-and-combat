@@ -1,0 +1,17 @@
+node_modules
+.next
+.env.local
+.env*.local
+dist
+build
+*.log
+.DS_Store
+.idea
+.vscode/*.local
+coverage
+.turbo
+.vercel
+.supabase
+playwright-report
+test-results
+*.tsbuildinfo
