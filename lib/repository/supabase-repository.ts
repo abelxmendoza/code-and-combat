@@ -26,34 +26,31 @@ export class SupabaseBookingRepository implements BookingRepository {
 
   async listUpcomingWorkshops(): Promise<WorkshopDto[]> {
     const supabase = await createServerSupabaseClient();
-    const { data, error } = await supabase
-      .from('group_events')
-      .select('*, event_registrations(status)')
-      .eq('status', 'scheduled')
-      .gte('start_time', new Date().toISOString())
-      .order('start_time', { ascending: true });
+    // RLS on event_registrations ("admin or self") means a guest's request
+    // can't see other people's registration rows at all — an embedded join
+    // would silently come back empty and always read as "0 confirmed". This
+    // RPC computes the count with elevated privilege instead, without
+    // exposing the underlying rows. See 0013_workshop_seat_counts.sql.
+    const { data, error } = await supabase.rpc('list_upcoming_workshops');
 
     if (error || !data) return [];
 
-    return data.map((row) => {
-      const registrations = (row as unknown as { event_registrations: { status: string }[] }).event_registrations ?? [];
-      return {
-        id: row.id,
-        slug: row.slug,
-        title: row.title,
-        description: row.description,
-        category: row.category,
-        startTime: row.start_time,
-        durationMinutes: row.duration_minutes,
-        capacity: row.capacity,
-        priceCents: row.price_cents,
-        priceUnit: row.price_unit,
-        deliveryType: row.delivery_type,
-        location: row.location,
-        status: row.status,
-        confirmedCount: registrations.filter((r) => r.status === 'confirmed').length,
-      };
-    });
+    return data.map((row) => ({
+      id: row.id,
+      slug: row.slug,
+      title: row.title,
+      description: row.description,
+      category: row.category,
+      startTime: row.start_time,
+      durationMinutes: row.duration_minutes,
+      capacity: row.capacity,
+      priceCents: row.price_cents,
+      priceUnit: row.price_unit,
+      deliveryType: row.delivery_type,
+      location: row.location,
+      status: row.status,
+      confirmedCount: row.confirmed_count,
+    }));
   }
 
   async getBookingSettings(): Promise<BookingSettingsDto> {

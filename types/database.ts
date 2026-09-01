@@ -479,6 +479,25 @@ export type Database = {
           status: string;
         }[];
       };
+      list_upcoming_workshops: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          id: string;
+          slug: string;
+          title: string;
+          description: string;
+          category: ServiceCategory;
+          start_time: string;
+          duration_minutes: number;
+          capacity: number;
+          price_cents: number;
+          price_unit: PriceUnit;
+          delivery_type: DeliveryType;
+          location: string | null;
+          status: GroupEventStatus;
+          confirmed_count: number;
+        }[];
+      };
     };
   };
 };
