@@ -122,7 +122,8 @@ export default async function Home() {
             I&apos;m Abel Mendoza — a computer science graduate, robotics operations and electronics-testing
             professional, and a software builder. I build custom apps and websites for individuals and businesses,
             and teach coding fundamentals, robotics/ROS, and AI-assisted development. I&apos;m also an amateur
-            Muay Thai competitor with a 6-1-1 official record and a Brazilian Jiu-Jitsu blue belt with tournament
+            Muay Thai competitor with a 6-1-1 official record (if you ask me, I&apos;m still undefeated 8-0 though) and a
+            Brazilian Jiu-Jitsu blue belt with tournament
             experience, trained by some of the best Muay Thai, MMA, and BJJ coaches in the LA/Orange County area —
             offering beginner-focused striking as a practical mentor, not a master or elite coach.
           </p>

@@ -37,6 +37,10 @@ export default function AboutPage() {
               I also built <strong className="text-cb-bone">LoreBook</strong>, a personal knowledge and memory
               platform, from the ground up.
             </p>
+            <p>
+              Beyond code, I also offer counseling on physics and engineering — coursework, problem sets, and the
+              concepts that trip people up between the classroom and the real thing.
+            </p>
             <p>Whether you&apos;re learning your first programming concepts or trying to turn an idea into a working project, the goal is the same:</p>
           </div>
           <p className="mt-6 border-l-2 border-cb-electric pl-5 text-lg font-bold text-cb-bone">
@@ -48,7 +52,8 @@ export default function AboutPage() {
           <h2 className="mb-4 text-cb-purple">Combat</h2>
           <div className="space-y-4 text-cb-gray">
             <p>
-              I have a <strong className="text-cb-bone">6-1-1 amateur Muay Thai record</strong> and I&apos;m a{' '}
+              I have a <strong className="text-cb-bone">6-1-1 amateur Muay Thai record</strong> (if you ask me,
+              I&apos;m still undefeated 8-0 though) and I&apos;m a{' '}
               <strong className="text-cb-bone">Brazilian Jiu-Jitsu blue belt</strong> with tournament experience.
               I&apos;ve trained under some of the best Muay Thai, MMA, and BJJ coaches in the LA/Orange County area.
             </p>
