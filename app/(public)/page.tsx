@@ -17,24 +17,24 @@ export default async function Home() {
   return (
     <div className="space-y-24 pb-24">
       {/* Hero */}
-      <section className="grid-lines border-b border-cb-steel px-4 py-20 sm:px-6 lg:px-8">
+      <section className="hero-atmosphere relative border-b border-cb-steel px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="text-mono mb-4 text-cb-gray">LA / ORANGE COUNTY</p>
+          <p className="label-caps mb-6 inline-block rounded-full border border-cb-steel px-3 py-1">LA / Orange County</p>
           <h1 className="text-cb-bone">
             Build sharper.
             <br />
             Move stronger.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-cb-gray">
-            Coding &amp; tech tutoring and beginner Muay Thai training from a practitioner, not a guru.
+            Software tutoring, robotics mentoring, and beginner Muay Thai instruction grounded in real-world experience.
           </p>
-          <p className="text-mono mt-4 text-cb-gray">Private sessions starting at $50.</p>
+          <p className="text-mono mt-4 text-cb-muted">Private sessions starting at $50.</p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
               <Link href="/booking">Book a Session</Link>
             </Button>
             <Button asChild size="lg" variant="secondary">
-              <Link href="/services">Explore Services</Link>
+              <Link href="/services">View Services</Link>
             </Button>
           </div>
         </div>
@@ -57,8 +57,8 @@ export default async function Home() {
             />
             <PathCard
               icon={Swords}
-              iconColor="text-cb-crimson"
-              accent="border-l-cb-crimson"
+              iconColor="text-cb-purple"
+              accent="border-l-cb-purple"
               title="Combat"
               description="Beginner Muay Thai fundamentals: footwork, defense, combinations, pad work, and conditioning."
               service={combatService}
@@ -93,7 +93,7 @@ export default async function Home() {
             one side, and beginner-focused striking on the other — as a practical mentor, not a master or elite
             coach.
           </p>
-          <Link href="/about" className="text-cb-bone underline hover:text-cb-crimson">
+          <Link href="/about" className="text-cb-bone underline hover:text-cb-electric">
             Read the full background →
           </Link>
         </div>
@@ -105,7 +105,7 @@ export default async function Home() {
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 flex items-end justify-between">
               <h2 className="flex items-center gap-3 text-cb-bone">
-                <PartyPopper className="h-7 w-7 text-cb-crimson" aria-hidden="true" />
+                <PartyPopper className="h-7 w-7 text-cb-electric" aria-hidden="true" />
                 Upcoming Workshops
               </h2>
               <Link href="/workshops" className="text-sm text-cb-gray underline hover:text-cb-bone">
@@ -254,8 +254,8 @@ function Step({
 }) {
   return (
     <div className="text-center">
-      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-cb-crimson/40">
-        <Icon className="h-6 w-6 text-cb-crimson" aria-hidden="true" />
+      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-cb-electric/40">
+        <Icon className="h-6 w-6 text-cb-electric" aria-hidden="true" />
       </div>
       <p className="text-mono mb-1 text-cb-gray">Step {step}</p>
       <h3 className="mb-2 text-base font-bold text-cb-bone">{title}</h3>

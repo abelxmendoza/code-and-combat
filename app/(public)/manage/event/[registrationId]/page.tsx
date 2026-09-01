@@ -20,7 +20,7 @@ export default async function ManageRegistrationPage({
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="mb-2 text-cb-bone">Manage Your Registration</h1>
       {!result.success || !result.data ? (
-        <p role="alert" className="mt-8 rounded border border-cb-crimson bg-cb-crimson/10 p-4 text-cb-bone">
+        <p role="alert" className="mt-8 rounded border border-cb-danger bg-cb-danger/10 p-4 text-cb-bone">
           {result.error ?? 'This link is invalid or has expired.'} If you need help, use the contact page.
         </p>
       ) : (

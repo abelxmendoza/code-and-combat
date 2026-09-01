@@ -189,7 +189,7 @@ function WorkshopForm({ defaultValues, onSaved }: { defaultValues: FormValues; o
         <Input id="location" {...register('location')} />
       </div>
       {serverError && (
-        <p role="alert" className="rounded border border-cb-crimson bg-cb-crimson/10 p-3 text-sm text-cb-bone">
+        <p role="alert" className="rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
           {serverError}
         </p>
       )}

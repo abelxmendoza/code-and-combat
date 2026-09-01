@@ -9,10 +9,10 @@ const badgeVariants = cva(
       variant: {
         neutral: 'border-cb-steel text-cb-gray',
         code: 'border-cb-electric/40 text-cb-electric',
-        combat: 'border-cb-crimson/40 text-cb-crimson',
+        combat: 'border-cb-purple/50 text-cb-electric',
         success: 'border-cb-electric/40 text-cb-electric',
         warning: 'border-cb-amber/40 text-cb-amber',
-        danger: 'border-cb-crimson text-cb-crimson',
+        danger: 'border-cb-danger/60 text-cb-danger',
       },
     },
     defaultVariants: { variant: 'neutral' },

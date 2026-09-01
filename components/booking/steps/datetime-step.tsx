@@ -95,7 +95,7 @@ export function DateTimeStep({
                 onClick={() => onDeliveryTypeChange(type)}
                 className={cn(
                   'rounded border px-4 py-2 text-sm capitalize transition',
-                  deliveryType === type ? 'border-cb-crimson bg-cb-crimson/10 text-cb-bone' : 'border-cb-steel text-cb-gray hover:text-cb-bone',
+                  deliveryType === type ? 'border-cb-purple bg-cb-purple/10 text-cb-bone' : 'border-cb-steel text-cb-gray hover:text-cb-bone',
                 )}
                 aria-pressed={deliveryType === type}
               >
@@ -107,7 +107,7 @@ export function DateTimeStep({
       )}
 
       {error && (
-        <p role="alert" className="mb-4 rounded border border-cb-crimson bg-cb-crimson/10 p-3 text-sm text-cb-bone">
+        <p role="alert" className="mb-4 rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
           {error}
         </p>
       )}
@@ -141,7 +141,7 @@ export function DateTimeStep({
                   onClick={() => setSelectedDate(dateKey)}
                   className={cn(
                     'shrink-0 rounded border px-4 py-2 text-mono text-sm transition',
-                    selectedDate === dateKey ? 'border-cb-crimson bg-cb-crimson/10 text-cb-bone' : 'border-cb-steel text-cb-gray hover:text-cb-bone',
+                    selectedDate === dateKey ? 'border-cb-purple bg-cb-purple/10 text-cb-bone' : 'border-cb-steel text-cb-gray hover:text-cb-bone',
                   )}
                 >
                   {label}
@@ -168,7 +168,7 @@ export function DateTimeStep({
                   }
                   className={cn(
                     'rounded border px-3 py-2 text-mono text-sm transition',
-                    isSelected ? 'border-cb-crimson bg-cb-crimson text-cb-black' : 'border-cb-steel text-cb-bone hover:border-cb-gray',
+                    isSelected ? 'border-cb-purple bg-cb-purple text-cb-bone' : 'border-cb-steel text-cb-bone hover:border-cb-gray',
                   )}
                   aria-pressed={isSelected}
                 >

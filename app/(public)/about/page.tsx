@@ -30,7 +30,7 @@ export default function AboutPage() {
         </section>
 
         <section>
-          <h2 className="mb-4 text-cb-crimson">Combat</h2>
+          <h2 className="mb-4 text-cb-purple">Combat</h2>
           <p className="text-cb-gray">
             6-1-1 amateur Muay Thai record. Brazilian Jiu-Jitsu blue belt. I teach beginner striking fundamentals —
             stance, guard, footwork, pad work, and conditioning — the same way I&apos;d coach someone before their
@@ -42,7 +42,7 @@ export default function AboutPage() {
         <section>
           <h2 className="mb-4 text-cb-bone">Honest scope</h2>
           <p className="text-cb-gray">
-            I&apos;m a practitioner, not a guru. On the code side, I can take you from fundamentals through practical
+            I teach what I actually use. On the code side, I can take you from fundamentals through practical
             project work, robotics/ROS basics, and a real developer workflow — I&apos;m not going to pretend to be a
             specialist in every language or framework that exists. On the combat side, I teach beginner-to-early
             intermediate striking; if you&apos;re training for competition at a serious level, you&apos;ll outgrow

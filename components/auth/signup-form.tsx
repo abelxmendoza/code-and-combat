@@ -49,20 +49,20 @@ export function SignupForm() {
       <div>
         <Label htmlFor="fullName">Full name</Label>
         <Input id="fullName" autoComplete="name" {...register('fullName')} />
-        {errors.fullName && <p className="mt-1 text-sm text-cb-crimson">{errors.fullName.message}</p>}
+        {errors.fullName && <p className="mt-1 text-sm text-cb-danger">{errors.fullName.message}</p>}
       </div>
       <div>
         <Label htmlFor="email">Email</Label>
         <Input id="email" type="email" autoComplete="email" {...register('email')} />
-        {errors.email && <p className="mt-1 text-sm text-cb-crimson">{errors.email.message}</p>}
+        {errors.email && <p className="mt-1 text-sm text-cb-danger">{errors.email.message}</p>}
       </div>
       <div>
         <Label htmlFor="password">Password</Label>
         <Input id="password" type="password" autoComplete="new-password" {...register('password')} />
-        {errors.password && <p className="mt-1 text-sm text-cb-crimson">{errors.password.message}</p>}
+        {errors.password && <p className="mt-1 text-sm text-cb-danger">{errors.password.message}</p>}
       </div>
       {error && (
-        <p role="alert" className="rounded border border-cb-crimson bg-cb-crimson/10 p-3 text-sm text-cb-bone">
+        <p role="alert" className="rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
           {error}
         </p>
       )}
@@ -71,7 +71,7 @@ export function SignupForm() {
       </Button>
       <p className="text-center text-sm text-cb-gray">
         Already have an account?{' '}
-        <Link href="/login" className="text-cb-bone underline hover:text-cb-crimson">
+        <Link href="/login" className="text-cb-bone underline hover:text-cb-electric">
           Sign in
         </Link>
       </p>

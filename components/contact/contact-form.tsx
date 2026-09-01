@@ -71,13 +71,13 @@ export function ContactForm() {
       <div>
         <Label htmlFor="name">Name</Label>
         <Input id="name" autoComplete="name" {...register('name')} aria-invalid={!!errors.name} />
-        {errors.name && <p className="mt-1 text-sm text-cb-crimson">{errors.name.message}</p>}
+        {errors.name && <p className="mt-1 text-sm text-cb-danger">{errors.name.message}</p>}
       </div>
 
       <div>
         <Label htmlFor="email">Email</Label>
         <Input id="email" type="email" autoComplete="email" {...register('email')} aria-invalid={!!errors.email} />
-        {errors.email && <p className="mt-1 text-sm text-cb-crimson">{errors.email.message}</p>}
+        {errors.email && <p className="mt-1 text-sm text-cb-danger">{errors.email.message}</p>}
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
@@ -103,11 +103,11 @@ export function ContactForm() {
       <div>
         <Label htmlFor="message">Message</Label>
         <Textarea id="message" {...register('message')} aria-invalid={!!errors.message} />
-        {errors.message && <p className="mt-1 text-sm text-cb-crimson">{errors.message.message}</p>}
+        {errors.message && <p className="mt-1 text-sm text-cb-danger">{errors.message.message}</p>}
       </div>
 
       {status === 'error' && (
-        <p role="alert" className="rounded border border-cb-crimson bg-cb-crimson/10 p-3 text-sm text-cb-bone">
+        <p role="alert" className="rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
           {errorMessage}
         </p>
       )}

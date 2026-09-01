@@ -40,8 +40,8 @@ export function WorkshopStep({
                 type="button"
                 onClick={() => onSelect(workshop.id)}
                 className={cn(
-                  'card w-full text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-crimson',
-                  isSelected ? 'border-cb-crimson' : 'hover:border-cb-gray',
+                  'card w-full text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-electric',
+                  isSelected ? 'border-cb-purple' : 'hover:border-cb-gray',
                 )}
                 aria-pressed={isSelected}
               >

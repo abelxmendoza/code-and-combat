@@ -30,7 +30,7 @@ const toastVariants = cva(
       variant: {
         default: 'border-cb-steel bg-cb-charcoal text-cb-bone',
         success: 'border-cb-electric/40 bg-cb-charcoal text-cb-bone',
-        destructive: 'border-cb-crimson bg-cb-charcoal text-cb-bone',
+        destructive: 'border-cb-danger bg-cb-charcoal text-cb-bone',
       },
     },
     defaultVariants: { variant: 'default' },
@@ -51,7 +51,7 @@ const ToastClose = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitive.Close
     ref={ref}
-    className={cn('shrink-0 rounded p-1 text-cb-gray hover:text-cb-bone focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-crimson', className)}
+    className={cn('shrink-0 rounded p-1 text-cb-gray hover:text-cb-bone focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-electric', className)}
     aria-label="Dismiss notification"
     {...props}
   >

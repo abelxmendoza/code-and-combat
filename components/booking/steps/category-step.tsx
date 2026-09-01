@@ -27,7 +27,7 @@ export function CategoryStep({
           title="Combat"
           description="Beginner Muay Thai, private striking, pad work, and small-group sessions."
           Icon={Swords}
-          accent="border-cb-crimson/40 hover:border-cb-crimson"
+          accent="border-cb-purple/40 hover:border-cb-electric"
           onSelect={onSelect}
         />
       </div>
@@ -55,12 +55,13 @@ function CategoryCard({
       type="button"
       onClick={() => onSelect(category)}
       className={cn(
-        'card flex flex-col items-start gap-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-crimson',
+        'card glow-border flex flex-col items-start gap-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-electric',
         accent,
       )}
     >
       <Icon className="h-8 w-8 text-cb-bone" aria-hidden="true" />
       <div>
+        <p className="label-caps mb-2">{category}</p>
         <h3 className="mb-2 text-cb-bone">{title}</h3>
         <p className="text-sm text-cb-gray">{description}</p>
       </div>

@@ -14,10 +14,10 @@ export default async function PortalLayout({ children }: { children: React.React
           <p className="text-sm text-cb-gray">Signed in as {session.user.email}</p>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/portal" className="text-sm text-cb-bone hover:text-cb-crimson">
+          <Link href="/portal" className="text-sm text-cb-bone hover:text-cb-electric">
             Bookings
           </Link>
-          <Link href="/portal/profile" className="text-sm text-cb-bone hover:text-cb-crimson">
+          <Link href="/portal/profile" className="text-sm text-cb-bone hover:text-cb-electric">
             Profile
           </Link>
           <form action={signOut}>

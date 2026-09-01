@@ -43,7 +43,7 @@ export function EventRegistrationForm({ eventId, isFull }: { eventId: string; is
         </p>
         <a
           href={`/manage/event/${result.registrationId}?token=${result.managementToken}`}
-          className="text-sm text-cb-bone underline hover:text-cb-crimson"
+          className="text-sm text-cb-bone underline hover:text-cb-electric"
         >
           Manage this registration
         </a>
@@ -56,19 +56,19 @@ export function EventRegistrationForm({ eventId, isFull }: { eventId: string; is
       <div>
         <Label htmlFor={`name-${eventId}`}>Full name</Label>
         <Input id={`name-${eventId}`} autoComplete="name" {...register('clientName')} />
-        {errors.clientName && <p className="mt-1 text-sm text-cb-crimson">{errors.clientName.message}</p>}
+        {errors.clientName && <p className="mt-1 text-sm text-cb-danger">{errors.clientName.message}</p>}
       </div>
       <div>
         <Label htmlFor={`email-${eventId}`}>Email</Label>
         <Input id={`email-${eventId}`} type="email" autoComplete="email" {...register('clientEmail')} />
-        {errors.clientEmail && <p className="mt-1 text-sm text-cb-crimson">{errors.clientEmail.message}</p>}
+        {errors.clientEmail && <p className="mt-1 text-sm text-cb-danger">{errors.clientEmail.message}</p>}
       </div>
       <div>
         <Label htmlFor={`phone-${eventId}`}>Phone</Label>
         <Input id={`phone-${eventId}`} type="tel" autoComplete="tel" {...register('clientPhone')} />
-        {errors.clientPhone && <p className="mt-1 text-sm text-cb-crimson">{errors.clientPhone.message}</p>}
+        {errors.clientPhone && <p className="mt-1 text-sm text-cb-danger">{errors.clientPhone.message}</p>}
       </div>
-      {error && <p role="alert" className="text-sm text-cb-crimson">{error}</p>}
+      {error && <p role="alert" className="text-sm text-cb-danger">{error}</p>}
       <Button type="submit" size="sm" disabled={isSubmitting}>
         {isSubmitting ? 'Registering…' : isFull ? 'Join waitlist' : 'Register'}
       </Button>

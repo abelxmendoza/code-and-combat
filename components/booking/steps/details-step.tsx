@@ -59,7 +59,7 @@ export function DetailsStep({
         <div>
           <Label htmlFor="clientName">Full name</Label>
           <Input id="clientName" autoComplete="name" {...register('clientName')} aria-invalid={!!errors.clientName} />
-          {errors.clientName && <p className="mt-1 text-sm text-cb-crimson">{errors.clientName.message}</p>}
+          {errors.clientName && <p className="mt-1 text-sm text-cb-danger">{errors.clientName.message}</p>}
         </div>
         <div>
           <Label htmlFor="clientEmail">Email</Label>
@@ -70,12 +70,12 @@ export function DetailsStep({
             {...register('clientEmail')}
             aria-invalid={!!errors.clientEmail}
           />
-          {errors.clientEmail && <p className="mt-1 text-sm text-cb-crimson">{errors.clientEmail.message}</p>}
+          {errors.clientEmail && <p className="mt-1 text-sm text-cb-danger">{errors.clientEmail.message}</p>}
         </div>
         <div>
           <Label htmlFor="clientPhone">Phone</Label>
           <Input id="clientPhone" type="tel" autoComplete="tel" {...register('clientPhone')} aria-invalid={!!errors.clientPhone} />
-          {errors.clientPhone && <p className="mt-1 text-sm text-cb-crimson">{errors.clientPhone.message}</p>}
+          {errors.clientPhone && <p className="mt-1 text-sm text-cb-danger">{errors.clientPhone.message}</p>}
         </div>
       </div>
 

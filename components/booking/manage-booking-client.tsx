@@ -203,7 +203,7 @@ function RescheduleSlotPicker({
                       })
                     }
                     className={`rounded border px-3 py-2 text-mono text-sm transition ${
-                      isSelected ? 'border-cb-crimson bg-cb-crimson text-cb-black' : 'border-cb-steel text-cb-bone hover:border-cb-gray'
+                      isSelected ? 'border-cb-purple bg-cb-purple text-cb-bone' : 'border-cb-steel text-cb-bone hover:border-cb-gray'
                     }`}
                   >
                     {formatTimeInTimezone(slot.startTime, timezone, 'h:mm a')}

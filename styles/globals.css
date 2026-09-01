@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Imports for custom fonts */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
-
 /* Base styling */
 html {
   scroll-behavior: smooth;
@@ -15,6 +12,11 @@ body {
   font-feature-settings: 'kern' 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(139, 92, 246, 0.35);
+  color: #f4f4f5;
 }
 
 /* Typography */
@@ -44,44 +46,77 @@ h3 {
   @apply font-mono text-sm font-medium tracking-wider;
 }
 
+.label-caps {
+  @apply font-mono text-xs font-medium uppercase tracking-[0.15em] text-cb-muted;
+}
+
 .btn-primary {
-  @apply rounded bg-cb-crimson px-6 py-3 font-semibold text-cb-black transition hover:bg-cb-crimson-dark focus:outline-none focus:ring-2 focus:ring-cb-crimson focus:ring-offset-2 focus:ring-offset-cb-black;
+  @apply rounded bg-cb-purple px-6 py-3 font-semibold text-cb-bone transition hover:bg-cb-purple-deep focus:outline-none focus:ring-2 focus:ring-cb-electric focus:ring-offset-2 focus:ring-offset-cb-black;
 }
 
 .btn-secondary {
-  @apply rounded border border-cb-steel bg-transparent px-6 py-3 font-semibold text-cb-bone transition hover:bg-cb-steel focus:outline-none focus:ring-2 focus:ring-cb-steel;
+  @apply rounded border border-cb-steel bg-transparent px-6 py-3 font-semibold text-cb-bone transition hover:border-cb-electric/50 hover:bg-cb-charcoal focus:outline-none focus:ring-2 focus:ring-cb-electric;
 }
 
 .btn-ghost {
   @apply rounded bg-transparent px-4 py-2 text-cb-bone transition hover:bg-cb-dark focus:outline-none focus:ring-2 focus:ring-cb-steel;
 }
 
+/* Base panel — thin border, sharp corners, near-black surface. The
+   "technical equipment panel" look: no soft glassmorphism, no big shadow. */
 .card {
-  @apply rounded border border-cb-steel bg-cb-charcoal p-6 shadow-cb-sm;
+  @apply rounded border border-cb-steel bg-cb-charcoal p-6 shadow-cb-sm transition-colors;
 }
 
 .input-field {
-  @apply rounded border border-cb-steel bg-cb-dark px-4 py-2 text-cb-bone placeholder-cb-gray transition focus:border-cb-crimson focus:outline-none focus:ring-1 focus:ring-cb-crimson;
+  @apply rounded border border-cb-steel bg-cb-dark px-4 py-2 text-cb-bone placeholder-cb-muted transition focus:border-cb-electric focus:outline-none focus:ring-1 focus:ring-cb-electric;
 }
 
 .label-text {
   @apply block text-sm font-medium text-cb-gray;
 }
 
+/* Restrained purple edge-lighting — a thin glowing border, not a filled
+   glow box. Use on hover/focus, never as a permanent resting state on more
+   than a couple of elements per screen. */
+.glow-border {
+  @apply transition-shadow duration-200;
+}
+.glow-border:hover,
+.glow-border:focus-visible {
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.45), 0 0 20px rgba(139, 92, 246, 0.12);
+  border-color: rgba(139, 92, 246, 0.45);
+}
+
+/* Faint engineering grid — crisp 1px lines via a pixel-boundary gradient
+   stop (not a narrow percentage band, which moirés badly at this line
+   width once scaled/compressed). Barely visible by design. */
 .grid-lines {
-  background-image: linear-gradient(
-    0deg,
-    transparent 24%,
-    rgba(220, 20, 60, 0.05) 25%,
-    rgba(220, 20, 60, 0.05) 26%,
-    transparent 27%,
-    transparent 74%,
-    rgba(220, 20, 60, 0.05) 75%,
-    rgba(220, 20, 60, 0.05) 76%,
-    transparent 77%,
-    transparent
-  );
-  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, rgba(139, 92, 246, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(139, 92, 246, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Sparse radial blacklight glow for hero/section backdrops. Extremely
+   subtle — atmosphere, not a spotlight. no-repeat matters: a bare
+   radial-gradient background-image tiles by default, which turns one soft
+   glow into a repeating brick of scallops. */
+.glow-atmosphere {
+  background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(109, 40, 217, 0.16), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Combined hero backdrop — grid tiles, the glow sits over it once. Two
+   classes can't just be stacked here since both set background-image and
+   only the later one would win; this composes them explicitly. */
+.hero-atmosphere {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(109, 40, 217, 0.16), transparent 70%),
+    linear-gradient(to right, rgba(139, 92, 246, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(139, 92, 246, 0.07) 1px, transparent 1px);
+  background-repeat: no-repeat, repeat, repeat;
+  background-size: 100% 100%, 48px 48px, 48px 48px;
 }
 
 /* Scrollbar styling */
@@ -100,7 +135,7 @@ h3 {
 
 /* Focus styles */
 *:focus-visible {
-  @apply outline-none ring-2 ring-cb-crimson ring-offset-2 ring-offset-cb-black;
+  @apply outline-none ring-2 ring-cb-electric ring-offset-2 ring-offset-cb-black;
 }
 
 /* Reduced motion */
@@ -111,6 +146,7 @@ h3 {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -130,7 +166,7 @@ h3 {
   background: theme('colors.cb-black');
 }
 .cb-calendar .rbc-today {
-  background: rgba(220, 20, 60, 0.08);
+  background: rgba(139, 92, 246, 0.1);
 }
 .cb-calendar .rbc-header,
 .cb-calendar .rbc-time-header-content,
@@ -153,9 +189,9 @@ h3 {
 }
 .cb-calendar .rbc-toolbar button:hover,
 .cb-calendar .rbc-toolbar button.rbc-active {
-  background: theme('colors.cb-crimson');
-  color: theme('colors.cb-black');
-  border-color: theme('colors.cb-crimson');
+  background: theme('colors.cb-purple');
+  color: theme('colors.cb-bone');
+  border-color: theme('colors.cb-purple');
 }
 .cb-calendar .rbc-off-range {
   color: theme('colors.cb-steel');
@@ -166,7 +202,7 @@ h3 {
   border: none !important;
 }
 .cb-event-combat {
-  background-color: theme('colors.cb-crimson') !important;
+  background-color: theme('colors.cb-purple') !important;
   color: theme('colors.cb-bone') !important;
   border: none !important;
 }

@@ -43,7 +43,7 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
             {clients.map((client) => (
               <tr key={client.email} className="border-b border-cb-dark">
                 <td className="px-3 py-3 text-cb-bone">
-                  <Link href={`/admin/clients/${encodeURIComponent(client.email)}`} className="hover:text-cb-crimson">
+                  <Link href={`/admin/clients/${encodeURIComponent(client.email)}`} className="hover:text-cb-electric">
                     {client.name}
                   </Link>
                 </td>

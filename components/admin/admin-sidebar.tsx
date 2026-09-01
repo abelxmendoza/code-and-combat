@@ -34,7 +34,7 @@ export function AdminSidebar({ unreadMessageCount = 0 }: { unreadMessageCount?: 
 
   return (
     <nav className="flex h-full flex-col border-r border-cb-steel bg-cb-charcoal p-4" aria-label="Admin navigation">
-      <Link href="/admin" className="mb-8 px-2 text-lg font-bold text-cb-crimson">
+      <Link href="/admin" className="mb-8 px-2 text-lg font-bold text-cb-electric">
         Admin
       </Link>
       <ul className="flex-1 space-y-1">
@@ -47,14 +47,14 @@ export function AdminSidebar({ unreadMessageCount = 0 }: { unreadMessageCount?: 
                 href={link.href}
                 className={cn(
                   'flex items-center gap-3 rounded px-3 py-2 text-sm transition',
-                  isActive ? 'bg-cb-crimson/10 text-cb-crimson' : 'text-cb-gray hover:bg-cb-dark hover:text-cb-bone',
+                  isActive ? 'bg-cb-purple/10 text-cb-electric' : 'text-cb-gray hover:bg-cb-dark hover:text-cb-bone',
                 )}
                 aria-current={isActive ? 'page' : undefined}
               >
                 <Icon className="h-4 w-4" aria-hidden="true" />
                 {link.label}
                 {link.href === '/admin/messages' && unreadMessageCount > 0 && (
-                  <span className="ml-auto rounded-full bg-cb-crimson px-2 py-0.5 text-xs font-semibold text-cb-black">
+                  <span className="ml-auto rounded-full bg-cb-purple px-2 py-0.5 text-xs font-semibold text-cb-bone">
                     {unreadMessageCount}
                   </span>
                 )}

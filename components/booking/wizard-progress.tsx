@@ -20,7 +20,7 @@ export function WizardProgress({ current, steps }: { current: WizardStep; steps:
             <span
               className={cn(
                 'flex h-7 w-7 items-center justify-center rounded-full border text-xs',
-                isCurrent && 'border-cb-crimson bg-cb-crimson text-cb-black',
+                isCurrent && 'border-cb-purple bg-cb-purple text-cb-bone',
                 isDone && 'border-cb-electric text-cb-electric',
                 !isCurrent && !isDone && 'border-cb-steel text-cb-gray',
               )}

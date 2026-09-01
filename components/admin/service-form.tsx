@@ -53,25 +53,25 @@ export function ServiceForm({
         <div>
           <Label htmlFor="name">Name</Label>
           <Input id="name" {...register('name')} />
-          {errors.name && <p className="mt-1 text-sm text-cb-crimson">{errors.name.message}</p>}
+          {errors.name && <p className="mt-1 text-sm text-cb-danger">{errors.name.message}</p>}
         </div>
         <div>
           <Label htmlFor="slug">Slug</Label>
           <Input id="slug" {...register('slug')} />
-          {errors.slug && <p className="mt-1 text-sm text-cb-crimson">{errors.slug.message}</p>}
+          {errors.slug && <p className="mt-1 text-sm text-cb-danger">{errors.slug.message}</p>}
         </div>
       </div>
 
       <div>
         <Label htmlFor="shortDescription">Short description</Label>
         <Input id="shortDescription" {...register('shortDescription')} />
-        {errors.shortDescription && <p className="mt-1 text-sm text-cb-crimson">{errors.shortDescription.message}</p>}
+        {errors.shortDescription && <p className="mt-1 text-sm text-cb-danger">{errors.shortDescription.message}</p>}
       </div>
 
       <div>
         <Label htmlFor="fullDescription">Full description</Label>
         <Textarea id="fullDescription" {...register('fullDescription')} />
-        {errors.fullDescription && <p className="mt-1 text-sm text-cb-crimson">{errors.fullDescription.message}</p>}
+        {errors.fullDescription && <p className="mt-1 text-sm text-cb-danger">{errors.fullDescription.message}</p>}
       </div>
 
       <div className="grid gap-6 sm:grid-cols-3">
@@ -144,7 +144,7 @@ export function ServiceForm({
       </div>
 
       {serverError && (
-        <p role="alert" className="rounded border border-cb-crimson bg-cb-crimson/10 p-3 text-sm text-cb-bone">
+        <p role="alert" className="rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
           {serverError}
         </p>
       )}

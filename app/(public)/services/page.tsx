@@ -29,11 +29,11 @@ export default async function ServicesPage() {
 
       <div className="space-y-16">
         {codeService && <OfferSection service={codeService} accent="border-l-cb-electric" badgeVariant="code" />}
-        {combatService && <OfferSection service={combatService} accent="border-l-cb-crimson" badgeVariant="combat" />}
+        {combatService && <OfferSection service={combatService} accent="border-l-cb-purple" badgeVariant="combat" />}
 
         <section>
           <div className="mb-6 flex items-center gap-3">
-            <PartyPopper className="h-6 w-6 text-cb-crimson" aria-hidden="true" />
+            <PartyPopper className="h-6 w-6 text-cb-electric" aria-hidden="true" />
             <h2 className="text-cb-bone">Group Workshop</h2>
           </div>
           <p className="mb-6 max-w-2xl text-cb-gray">
@@ -56,7 +56,7 @@ export default async function ServicesPage() {
 
         <section>
           <div className="mb-6 flex items-center gap-3">
-            <Layers className="h-6 w-6 text-cb-crimson" aria-hidden="true" />
+            <Layers className="h-6 w-6 text-cb-electric" aria-hidden="true" />
             <h2 className="text-cb-bone">Four-Session Package</h2>
           </div>
           <div className="card max-w-2xl">

@@ -21,13 +21,13 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-10 flex flex-wrap gap-4">
-        <Link href="/admin/calendar" className="text-cb-bone underline hover:text-cb-crimson">
+        <Link href="/admin/calendar" className="text-cb-bone underline hover:text-cb-electric">
           Open calendar
         </Link>
-        <Link href="/admin/appointments" className="text-cb-bone underline hover:text-cb-crimson">
+        <Link href="/admin/appointments" className="text-cb-bone underline hover:text-cb-electric">
           View all appointments
         </Link>
-        <Link href="/admin/messages" className="text-cb-bone underline hover:text-cb-crimson">
+        <Link href="/admin/messages" className="text-cb-bone underline hover:text-cb-electric">
           View messages
         </Link>
       </div>
@@ -45,7 +45,7 @@ function MetricCard({ label, value, href }: { label: string; value: string; href
   if (href) {
     return (
       <Link href={href}>
-        <Card className="transition hover:border-cb-crimson">{content}</Card>
+        <Card className="transition hover:border-cb-electric">{content}</Card>
       </Link>
     );
   }

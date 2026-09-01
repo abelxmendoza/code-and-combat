@@ -20,10 +20,10 @@ export function AdminShell({
       </div>
 
       <div className="flex items-center justify-between border-b border-cb-steel bg-cb-charcoal p-4 md:hidden">
-        <span className="font-bold text-cb-crimson">Admin</span>
+        <span className="font-bold text-cb-electric">Admin</span>
         <button
           type="button"
-          className="rounded p-2 text-cb-bone focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-crimson"
+          className="rounded p-2 text-cb-bone focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-electric"
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? 'Close admin menu' : 'Open admin menu'}
           onClick={() => setMobileOpen((v) => !v)}

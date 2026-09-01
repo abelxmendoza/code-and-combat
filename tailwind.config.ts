@@ -10,35 +10,45 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'cb-black': '#0a0a0a',
-        'cb-charcoal': '#1a1a1a',
-        'cb-dark': '#2a2a2a',
-        'cb-steel': '#4a4a4a',
-        'cb-gray': '#8a8a8a',
-        'cb-bone': '#f5f5f5',
+        // Surfaces, darkest to lightest.
+        'cb-black': '#050505', // page background
+        'cb-charcoal': '#09090b', // raised surface (cards/panels)
+        'cb-dark': '#101014', // secondary surface (inputs, nested panels)
+        'cb-steel': '#202027', // borders
+        // Text, muted to brightest.
+        'cb-muted': '#71717a',
+        'cb-gray': '#a1a1aa',
+        'cb-bone': '#f4f4f5',
         'cb-white': '#ffffff',
-        'cb-crimson': '#dc143c',
-        'cb-crimson-dark': '#8b0a1a',
+        // Purple accent system — restrained, used as edge lighting and
+        // active/focus states, not fills. See styles/globals.css glow utilities.
+        'cb-purple': '#6d28d9', // primary accent
+        'cb-purple-deep': '#2e1065', // pressed/hover-dark, deep blacklight purple
+        'cb-electric': '#8b5cf6', // bright ultraviolet — hover glow, active/confirmed states
+        'cb-void': '#170b26', // atmospheric gradients only, never text/borders
+        // Reserved semantic colors — kept separate from the brand accent so
+        // errors/warnings never get lost in the purple glow.
+        'cb-danger': '#ef4444',
         'cb-amber': '#d4a574',
-        'cb-electric': '#00ff00',
       },
       fontFamily: {
-        sans: ['Inter', ...defaultTheme.fontFamily.sans],
-        mono: ['IBM Plex Mono', ...defaultTheme.fontFamily.mono],
-        display: ['Space Grotesk', ...defaultTheme.fontFamily.sans],
+        sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
+        mono: ['var(--font-mono)', ...defaultTheme.fontFamily.mono],
+        display: ['var(--font-display)', ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
         none: '0px',
         sm: '2px',
-        DEFAULT: '4px',
-        md: '6px',
-        lg: '8px',
+        DEFAULT: '3px',
+        md: '4px',
+        lg: '6px',
       },
       boxShadow: {
-        'cb-sm': '0 1px 2px rgba(255, 255, 255, 0.05)',
-        'cb-md': '0 4px 6px rgba(255, 255, 255, 0.1)',
-        'cb-lg': '0 10px 15px rgba(255, 255, 255, 0.1)',
-        'cb-crimson': '0 0 20px rgba(220, 20, 60, 0.3)',
+        'cb-sm': '0 1px 2px rgba(0, 0, 0, 0.4)',
+        'cb-md': '0 4px 12px rgba(0, 0, 0, 0.5)',
+        'cb-lg': '0 10px 30px rgba(0, 0, 0, 0.6)',
+        'cb-glow-sm': '0 0 0 1px rgba(139, 92, 246, 0.4), 0 0 12px rgba(139, 92, 246, 0.15)',
+        'cb-glow-md': '0 0 0 1px rgba(139, 92, 246, 0.5), 0 0 24px rgba(139, 92, 246, 0.25)',
       },
       backgroundImage: {
         'gradient-grain':

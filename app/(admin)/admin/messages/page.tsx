@@ -23,7 +23,7 @@ export default async function AdminMessagesPage({ searchParams }: { searchParams
 
 function FilterLink({ label, active, href }: { label: string; active: boolean; href: string }) {
   return (
-    <Link href={href} className={active ? 'text-cb-crimson' : 'text-cb-gray hover:text-cb-bone'}>
+    <Link href={href} className={active ? 'text-cb-electric' : 'text-cb-gray hover:text-cb-bone'}>
       {label}
     </Link>
   );

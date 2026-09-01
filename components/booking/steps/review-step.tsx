@@ -48,7 +48,7 @@ export function ReviewStep({
       {waiverNotice && <p className="mb-4 text-sm text-cb-gray">{waiverNotice}</p>}
 
       {error && (
-        <p role="alert" className="mb-6 rounded border border-cb-crimson bg-cb-crimson/10 p-3 text-sm text-cb-bone">
+        <p role="alert" className="mb-6 rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
           {error}
         </p>
       )}

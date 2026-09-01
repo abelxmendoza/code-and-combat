@@ -82,14 +82,14 @@ function OfferCard({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'card flex flex-col items-start gap-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-crimson',
-        disabled ? 'cursor-not-allowed opacity-40' : 'hover:border-cb-gray',
+        'card flex flex-col items-start gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cb-electric',
+        disabled ? 'cursor-not-allowed opacity-40' : 'glow-border',
       )}
     >
-      <Icon className="h-6 w-6 text-cb-crimson" aria-hidden="true" />
+      <Icon className="h-6 w-6 text-cb-electric" aria-hidden="true" />
       <h3 className="text-base font-bold text-cb-bone">{title}</h3>
       <p className="text-sm text-cb-gray">{description}</p>
-      {meta && <p className="text-mono mt-auto text-cb-gray">{meta}</p>}
+      {meta && <p className="text-mono mt-auto text-cb-muted">{meta}</p>}
     </button>
   );
 }

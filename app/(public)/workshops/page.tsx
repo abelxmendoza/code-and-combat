@@ -46,7 +46,7 @@ export default async function WorkshopsPage() {
                 </div>
                 <p className="mb-4 text-sm">
                   {isFull ? (
-                    <span className="text-cb-crimson">Full — join the waitlist</span>
+                    <span className="text-cb-danger">Full — join the waitlist</span>
                   ) : (
                     <span className="text-cb-electric">
                       {seatsRemaining} of {workshop.capacity} seats remaining
