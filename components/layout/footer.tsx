@@ -60,7 +60,11 @@ export function Footer() {
           <div>
             <h4 className="label-caps mb-4">Connect</h4>
             <ul className="space-y-2 text-sm text-cb-gray">
-              <li>hello@codeandcombat.example (placeholder)</li>
+              <li>
+                <a href="mailto:abelxmendoza@gmail.com" className="transition-colors hover:text-cb-bone">
+                  abelxmendoza@gmail.com
+                </a>
+              </li>
               <li>Instagram — @codeandcombat (placeholder)</li>
               <li>GitHub — @abelmendoza (placeholder)</li>
             </ul>

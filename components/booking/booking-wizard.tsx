@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
@@ -242,6 +243,15 @@ export function BookingWizard({
 
   return (
     <div>
+      {draft.category === 'combat' && step !== 'category' && step !== 'confirmed' && (
+        <div className="mb-10 flex items-center gap-5">
+          <p className="font-mono text-base font-medium uppercase tracking-[0.15em] text-cb-gray sm:text-lg">
+            Brought to you by
+          </p>
+          <Image src="/ShinigamiFC.png" alt="Shinigami FC" width={176} height={176} className="h-32 w-32 object-contain sm:h-36 sm:w-36" />
+        </div>
+      )}
+
       <WizardProgress current={step} steps={progressSteps} />
 
       {step === 'category' && (

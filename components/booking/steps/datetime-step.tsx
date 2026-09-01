@@ -29,6 +29,7 @@ export function DateTimeStep({
   const [slots, setSlots] = useState<AvailableSlotDto[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const timezone = useMemo(() => getClientTimezone(), []);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export function DateTimeStep({
     return () => {
       cancelled = true;
     };
-  }, [service.id]);
+  }, [service.id, retryCount]);
 
   const grouped = useMemo(() => {
     if (!slots) return new Map<string, AvailableSlot[]>();
@@ -107,9 +108,12 @@ export function DateTimeStep({
       )}
 
       {error && (
-        <p role="alert" className="mb-4 rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
-          {error}
-        </p>
+        <div role="alert" className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded border border-cb-danger bg-cb-danger/10 p-3 text-sm text-cb-bone">
+          <span>{error}</span>
+          <Button type="button" size="sm" variant="secondary" onClick={() => setRetryCount((c) => c + 1)}>
+            Try again
+          </Button>
+        </div>
       )}
 
       {!error && slots === null && (
