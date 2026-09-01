@@ -12,7 +12,7 @@ import { registerForEvent, type EventRegistrationConfirmation } from '@/lib/acti
 const schema = z.object({
   clientName: z.string().trim().min(2, 'Enter your full name.').max(100),
   clientEmail: z.string().trim().email('Enter a valid email address.'),
-  clientPhone: z.string().trim().max(20).optional().or(z.literal('')),
+  clientPhone: z.string().trim().min(7, 'Enter a valid phone number.').max(20),
 });
 type FormValues = z.infer<typeof schema>;
 
@@ -62,6 +62,11 @@ export function EventRegistrationForm({ eventId, isFull }: { eventId: string; is
         <Label htmlFor={`email-${eventId}`}>Email</Label>
         <Input id={`email-${eventId}`} type="email" autoComplete="email" {...register('clientEmail')} />
         {errors.clientEmail && <p className="mt-1 text-sm text-cb-crimson">{errors.clientEmail.message}</p>}
+      </div>
+      <div>
+        <Label htmlFor={`phone-${eventId}`}>Phone</Label>
+        <Input id={`phone-${eventId}`} type="tel" autoComplete="tel" {...register('clientPhone')} />
+        {errors.clientPhone && <p className="mt-1 text-sm text-cb-crimson">{errors.clientPhone.message}</p>}
       </div>
       {error && <p role="alert" className="text-sm text-cb-crimson">{error}</p>}
       <Button type="submit" size="sm" disabled={isSubmitting}>

@@ -11,12 +11,7 @@ export const bookingSchema = z
     startTime: z.string().datetime({ message: 'Select an available time slot.' }),
     clientName: z.string().trim().min(2, 'Name must be at least 2 characters.').max(100),
     clientEmail: z.string().trim().email('Enter a valid email address.'),
-    clientPhone: z
-      .string()
-      .trim()
-      .max(20)
-      .optional()
-      .or(z.literal('')),
+    clientPhone: z.string().trim().min(7, 'Enter a valid phone number.').max(20),
     notes: z.string().trim().max(500).optional().or(z.literal('')),
     timezone: z.string().min(1),
     waiverAccepted: z.boolean().default(false),
@@ -43,9 +38,21 @@ export const eventRegistrationSchema = z.object({
   eventId: z.string().uuid(),
   clientName: z.string().trim().min(2).max(100),
   clientEmail: z.string().trim().email(),
-  clientPhone: z.string().trim().max(20).optional().or(z.literal('')),
+  clientPhone: z.string().trim().min(7, 'Enter a valid phone number.').max(20),
 });
 export type EventRegistrationFormData = z.infer<typeof eventRegistrationSchema>;
+
+// Four-Session Package purchase. Price and session count are NOT part of
+// this schema — purchase_session_package() fixes them server-side
+// (see supabase/migrations/0012_session_packages.sql).
+export const packagePurchaseSchema = z.object({
+  packageType: z.enum(['code', 'combat']),
+  clientName: z.string().trim().min(2, 'Name must be at least 2 characters.').max(100),
+  clientEmail: z.string().trim().email('Enter a valid email address.'),
+  clientPhone: z.string().trim().min(7, 'Enter a valid phone number.').max(20),
+  notes: z.string().trim().max(500).optional().or(z.literal('')),
+});
+export type PackagePurchaseFormData = z.infer<typeof packagePurchaseSchema>;
 
 // Contact form
 export const contactSchema = z.object({

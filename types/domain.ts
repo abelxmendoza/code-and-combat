@@ -12,6 +12,7 @@ export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type GroupEvent = Database['public']['Tables']['group_events']['Row'];
 export type EventRegistration = Database['public']['Tables']['event_registrations']['Row'];
 export type ClientNote = Database['public']['Tables']['client_notes']['Row'];
+export type SessionPackage = Database['public']['Tables']['session_packages']['Row'];
 
 export type { ServiceCategory, DeliveryType, PriceUnit } from './database';
 export type { AppointmentStatus } from './database';

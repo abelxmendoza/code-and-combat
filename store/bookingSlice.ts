@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type WizardStep = 'category' | 'service' | 'datetime' | 'details' | 'review' | 'confirmed';
+export type WizardStep = 'category' | 'offerType' | 'workshop' | 'datetime' | 'details' | 'review' | 'confirmed';
+export type OfferType = 'private' | 'workshop' | 'package';
 
 export interface BookingDraft {
   category?: 'code' | 'combat';
+  offerType?: OfferType;
+  // Private session
   serviceId?: string;
   deliveryType?: 'online' | 'in-person' | 'hybrid';
   startTime?: string; // ISO UTC instant of the selected slot
   endTime?: string;
+  // Group workshop
+  workshopId?: string;
+  // Shared client details
   clientName?: string;
   clientEmail?: string;
   clientPhone?: string;

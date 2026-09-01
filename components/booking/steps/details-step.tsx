@@ -8,12 +8,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import type { BookableService } from '@/types/domain';
+import type { ServiceCategory } from '@/types/domain';
 
 const detailsSchema = z.object({
   clientName: z.string().trim().min(2, 'Enter your full name.').max(100),
   clientEmail: z.string().trim().email('Enter a valid email address.'),
-  clientPhone: z.string().trim().max(20).optional().or(z.literal('')),
+  clientPhone: z.string().trim().min(7, 'Enter a valid phone number.').max(20),
   notes: z.string().trim().max(500).optional().or(z.literal('')),
   waiverAccepted: z.boolean().optional(),
 });
@@ -21,12 +21,18 @@ const detailsSchema = z.object({
 export type DetailsFormValues = z.infer<typeof detailsSchema>;
 
 export function DetailsStep({
-  service,
+  category,
+  requiresWaiver,
+  preparationInstructions,
+  notePrompt,
   defaultValues,
   onSubmit,
   onBack,
 }: {
-  service: BookableService;
+  category: ServiceCategory;
+  requiresWaiver: boolean;
+  preparationInstructions?: string | null;
+  notePrompt: string;
   defaultValues: Partial<DetailsFormValues>;
   onSubmit: (values: DetailsFormValues) => void;
   onBack: () => void;
@@ -47,7 +53,7 @@ export function DetailsStep({
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <h2 className="mb-2 text-cb-bone">Your details</h2>
-      <p className="mb-8 text-cb-gray">We’ll use this to confirm your session and send your booking link.</p>
+      <p className="mb-8 text-cb-gray">We’ll use this to confirm and send your booking link.</p>
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
@@ -67,29 +73,30 @@ export function DetailsStep({
           {errors.clientEmail && <p className="mt-1 text-sm text-cb-crimson">{errors.clientEmail.message}</p>}
         </div>
         <div>
-          <Label htmlFor="clientPhone">Phone (optional)</Label>
-          <Input id="clientPhone" type="tel" autoComplete="tel" {...register('clientPhone')} />
+          <Label htmlFor="clientPhone">Phone</Label>
+          <Input id="clientPhone" type="tel" autoComplete="tel" {...register('clientPhone')} aria-invalid={!!errors.clientPhone} />
+          {errors.clientPhone && <p className="mt-1 text-sm text-cb-crimson">{errors.clientPhone.message}</p>}
         </div>
       </div>
 
       <div className="mt-6">
-        <Label htmlFor="notes">Notes for Abel (optional)</Label>
-        <Textarea id="notes" placeholder="Anything useful to know ahead of the session." {...register('notes')} />
+        <Label htmlFor="notes">{notePrompt}</Label>
+        <Textarea id="notes" placeholder="A sentence or two is plenty." {...register('notes')} />
       </div>
 
-      {service.preparationInstructions && (
+      {preparationInstructions && (
         <div className="mt-6 rounded border border-cb-steel bg-cb-dark p-4 text-sm text-cb-gray">
           <p className="mb-1 font-semibold text-cb-bone">Before your session</p>
-          <p>{service.preparationInstructions}</p>
+          <p>{preparationInstructions}</p>
         </div>
       )}
 
-      {service.requiresWaiver && (
+      {requiresWaiver && (
         <div className="mt-6 rounded border border-cb-amber/40 bg-cb-dark p-4">
           <p className="mb-3 text-sm text-cb-gray">
-            This is a beginner-focused martial arts session, not medical advice. Participation requires accepting
-            our waiver — you assume the risks of physical training and confirm you have no condition that would
-            make participation unsafe.
+            This is beginner-focused {category === 'combat' ? 'martial arts' : 'training'} instruction, not medical
+            advice. Participation requires accepting our waiver — you assume the risks of physical training and
+            confirm you have no condition that would make participation unsafe.
           </p>
           <div className="flex items-start gap-3">
             <Checkbox
@@ -109,7 +116,7 @@ export function DetailsStep({
         <Button type="button" variant="secondary" onClick={onBack}>
           Back
         </Button>
-        <Button type="submit" disabled={service.requiresWaiver && !waiverAccepted}>
+        <Button type="submit" disabled={requiresWaiver && !waiverAccepted}>
           Continue to review
         </Button>
       </div>

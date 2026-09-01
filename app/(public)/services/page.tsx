@@ -1,140 +1,138 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Globe, LayoutTemplate, Smartphone, Rocket } from 'lucide-react';
-import { getActiveServices } from '@/lib/db/services';
+import { Users, PartyPopper, Layers } from 'lucide-react';
+import { getBookingRepository } from '@/lib/repository';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatPriceCents } from '@/lib/utils';
+import { formatTimeInTimezone } from '@/lib/timezone';
+import type { BookableService } from '@/types/domain';
+import type { WorkshopDto } from '@/lib/repository';
 
 export const metadata: Metadata = {
   title: 'Services — Code & Combat by Abel',
-  description: 'Coding tutoring, custom website/app development, robotics mentoring, and beginner Muay Thai instruction in LA/OC.',
+  description: 'Coding & tech tutoring and private striking training in LA/OC — private sessions, group workshops, or a four-session package.',
 };
 
-const DEV_DISCOVERY_SLUG = 'dev-discovery-call';
-
 export default async function ServicesPage() {
-  const services = await getActiveServices();
-  const devDiscoveryCall = services.find((s) => s.slug === DEV_DISCOVERY_SLUG);
-  const codeServices = services.filter((s) => s.category === 'code' && s.slug !== DEV_DISCOVERY_SLUG);
-  const combatServices = services.filter((s) => s.category === 'combat');
+  const repo = getBookingRepository();
+  const [services, workshops] = await Promise.all([repo.listActiveServices(), repo.listUpcomingWorkshops()]);
+  const codeService = services.find((s) => s.category === 'code');
+  const combatService = services.find((s) => s.category === 'combat');
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="mb-2 text-cb-bone">Services</h1>
       <p className="mb-12 max-w-2xl text-cb-gray">
-        Editable, real offerings — pricing and durations shown here are current starting points, not fixed forever.
+        Four ways to work with Abel — kept simple on purpose. Private sessions starting at $50.
       </p>
 
-      {/* Custom development — hire-to-build, distinct from tutoring below */}
-      <section className="mb-16 rounded border border-cb-electric/40 bg-cb-charcoal p-6 sm:p-10">
-        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-mono mb-2 text-cb-electric">AVAILABLE FOR HIRE</p>
-            <h2 className="text-cb-bone">Custom Website &amp; App Development</h2>
-            <p className="mt-2 max-w-2xl text-cb-gray">
-              Beyond tutoring, I build software for people who need something made: personal websites, business
-              landing pages, or a full web app for a product idea. Real projects, scoped and quoted individually —
-              not a fixed-price template.
-            </p>
+      <div className="space-y-16">
+        {codeService && <OfferSection service={codeService} accent="border-l-cb-electric" badgeVariant="code" />}
+        {combatService && <OfferSection service={combatService} accent="border-l-cb-crimson" badgeVariant="combat" />}
+
+        <section>
+          <div className="mb-6 flex items-center gap-3">
+            <PartyPopper className="h-6 w-6 text-cb-crimson" aria-hidden="true" />
+            <h2 className="text-cb-bone">Group Workshop</h2>
           </div>
-          {devDiscoveryCall && (
-            <Button asChild size="lg" className="shrink-0">
-              <Link href={`/booking?service=${devDiscoveryCall.slug}`}>Book a Free Discovery Call</Link>
-            </Button>
+          <p className="mb-6 max-w-2xl text-cb-gray">
+            A coding seminar or a beginner striking class, run in a small group — $25 per person, 90 minutes by
+            default. Topic, date, capacity, and remaining seats are shown for each upcoming session.
+          </p>
+          {workshops.length === 0 ? (
+            <p className="text-cb-gray">No workshops scheduled right now — check back soon.</p>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {workshops.map((w) => (
+                <WorkshopCard key={w.id} workshop={w} />
+              ))}
+            </div>
           )}
-        </div>
+          <Button asChild variant="secondary" className="mt-6">
+            <Link href="/workshops">View all workshops</Link>
+          </Button>
+        </section>
 
-        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <DevOffer icon={LayoutTemplate} title="Personal sites" description="Portfolios, resumes, personal brand pages." />
-          <DevOffer icon={Globe} title="Business landing pages" description="Fast, clean marketing pages that convert." />
-          <DevOffer icon={Rocket} title="Web apps / MVPs" description="A product idea, built and shipped end to end." />
-          <DevOffer icon={Smartphone} title="Something else" description="Have a different idea? Bring it to the call." />
-        </div>
-
-        {devDiscoveryCall && (
-          <div className="flex flex-wrap items-center gap-3 text-mono text-cb-gray">
-            <span>{devDiscoveryCall.durationMinutes} min call</span>
-            <span aria-hidden="true">·</span>
-            <span className="text-cb-electric">Free</span>
-            <span aria-hidden="true">·</span>
-            <span>Custom quote after — no obligation</span>
+        <section>
+          <div className="mb-6 flex items-center gap-3">
+            <Layers className="h-6 w-6 text-cb-crimson" aria-hidden="true" />
+            <h2 className="text-cb-bone">Four-Session Package</h2>
           </div>
-        )}
-      </section>
-
-      <section className="mb-16">
-        <h2 className="mb-6 text-cb-electric">Code Tutoring &amp; Mentoring</h2>
-        {codeServices.length === 0 ? (
-          <p className="text-cb-gray">No active code services right now.</p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {codeServices.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
+          <div className="card max-w-2xl">
+            <p className="mb-4 text-cb-gray">
+              Four 60-minute private sessions, bundled at a lower per-session rate — choose Coding &amp; Tech
+              Tutoring or Private Striking Training when you book.
+            </p>
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-mono text-cb-gray">
+              <span>4 × 60 min</span>
+              <span aria-hidden="true">·</span>
+              <span>{formatPriceCents(18000)} total</span>
+            </div>
+            <p className="mb-4 text-sm text-cb-amber">
+              Payment integration is coming soon — booking a package starts a request; Abel follows up to arrange
+              payment.
+            </p>
+            <Button asChild>
+              <Link href="/booking">Get started</Link>
+            </Button>
           </div>
-        )}
-      </section>
+        </section>
 
-      <section>
-        <h2 className="mb-6 text-cb-crimson">Combat</h2>
-        {combatServices.length === 0 ? (
-          <p className="text-cb-gray">No active combat services right now.</p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {combatServices.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
-          </div>
-        )}
-        <p className="mt-8 max-w-2xl rounded border border-cb-amber/40 bg-cb-dark p-4 text-sm text-cb-gray">
+        <p className="max-w-2xl rounded border border-cb-amber/40 bg-cb-dark p-4 text-sm text-cb-gray">
           Martial arts sessions are beginner-focused and are not medical advice. Participation requires accepting a
-          waiver, presented during booking. Sessions serve the LA / Orange County area.
+          waiver, presented during booking. In-person sessions serve the LA / Orange County area.
         </p>
-      </section>
+      </div>
     </div>
   );
 }
 
-function DevOffer({
-  icon: Icon,
-  title,
-  description,
+function OfferSection({
+  service,
+  accent,
+  badgeVariant,
 }: {
-  icon: typeof Globe;
-  title: string;
-  description: string;
+  service: BookableService;
+  accent: string;
+  badgeVariant: 'code' | 'combat';
 }) {
   return (
-    <div>
-      <Icon className="mb-3 h-6 w-6 text-cb-electric" aria-hidden="true" />
-      <p className="mb-1 font-semibold text-cb-bone">{title}</p>
-      <p className="text-sm text-cb-gray">{description}</p>
-    </div>
+    <section className={`border-l-4 ${accent} pl-6`}>
+      <div className="mb-3 flex items-center gap-3">
+        <Users className="h-6 w-6 text-cb-bone" aria-hidden="true" />
+        <h2 className="text-cb-bone">{service.name}</h2>
+        <Badge variant={badgeVariant}>{badgeVariant}</Badge>
+      </div>
+      <p className="mb-4 max-w-2xl text-cb-gray">{service.fullDescription}</p>
+      <div className="mb-4 flex flex-wrap items-center gap-3 text-mono text-cb-gray">
+        <span>{service.durationMinutes} min</span>
+        <span aria-hidden="true">·</span>
+        <span>{formatPriceCents(service.priceCents)}</span>
+        <span aria-hidden="true">·</span>
+        <span>{service.deliveryType === 'hybrid' ? 'online or in person' : service.deliveryType}</span>
+      </div>
+      <Button asChild>
+        <Link href={`/booking?service=${service.slug}`}>Book</Link>
+      </Button>
+    </section>
   );
 }
 
-function ServiceCard({ service }: { service: Awaited<ReturnType<typeof getActiveServices>>[number] }) {
+function WorkshopCard({ workshop }: { workshop: WorkshopDto }) {
+  const seatsRemaining = Math.max(workshop.capacity - workshop.confirmedCount, 0);
   return (
-    <div className="card flex flex-col gap-4">
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="text-lg font-bold text-cb-bone">{service.name}</h3>
-        <Badge variant={service.category}>{service.category}</Badge>
+    <div className="card">
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <h3 className="font-bold text-cb-bone">{workshop.title}</h3>
+        <Badge variant={workshop.category}>{workshop.category}</Badge>
       </div>
-      <p className="text-sm text-cb-gray">{service.shortDescription}</p>
-      <div className="flex flex-wrap items-center gap-3 text-mono text-cb-gray">
-        <span>{service.durationMinutes} min</span>
-        <span aria-hidden="true">·</span>
-        <span>
-          {service.priceCents === 0 ? 'Free' : formatPriceCents(service.priceCents)}
-          {service.priceUnit === 'person' ? ' / person' : ''}
-        </span>
-        <span aria-hidden="true">·</span>
-        <span>{service.deliveryType}</span>
-      </div>
-      <Button asChild className="mt-auto">
-        <Link href={`/booking?service=${service.slug}`}>Book</Link>
-      </Button>
+      <p className="text-mono text-sm text-cb-gray">
+        {formatTimeInTimezone(new Date(workshop.startTime), 'America/Los_Angeles', 'MMM d, h:mm a zzz')}
+      </p>
+      <p className="text-mono text-sm text-cb-gray">
+        {formatPriceCents(workshop.priceCents)}/person · {seatsRemaining} of {workshop.capacity} seats left
+      </p>
     </div>
   );
 }

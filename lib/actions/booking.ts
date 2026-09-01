@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { getBookingRepository } from '@/lib/repository';
 import { bookingSchema, rescheduleSchema, cancelSchema } from '@/lib/validation';
 import { notifyBookingCancelled, notifyBookingConfirmed, notifyBookingRescheduled } from '@/lib/notifications/notify';
 
@@ -135,16 +136,9 @@ export async function getManageableAppointment(
   };
 }
 
-export interface BookingConfirmation {
-  appointmentId: string;
-  bookingReference: string;
-  managementToken: string;
-  startTime: string;
-  endTime: string;
-  priceCents: number;
-  priceUnit: string;
-  location: string | null;
-}
+import type { BookingConfirmationDto } from '@/lib/repository';
+
+export type BookingConfirmation = BookingConfirmationDto;
 
 export async function submitBooking(input: unknown): Promise<ActionResult<BookingConfirmation>> {
   const parsed = bookingSchema.safeParse(input);
@@ -158,55 +152,38 @@ export async function submitBooking(input: unknown): Promise<ActionResult<Bookin
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: rows, error } = await supabase.rpc('book_appointment', {
-    p_service_id: data.serviceId,
-    p_start_time: data.startTime,
-    p_delivery_type: data.deliveryType,
-    p_client_name: data.clientName,
-    p_client_email: data.clientEmail,
-    p_client_phone: data.clientPhone || null,
-    p_notes: data.notes || null,
-    p_client_timezone: data.timezone,
-    p_waiver_accepted: data.waiverAccepted,
-    p_client_id: user?.id ?? null,
+  const repo = getBookingRepository();
+  const result = await repo.createBooking({
+    serviceId: data.serviceId,
+    startTimeIso: data.startTime,
+    deliveryType: data.deliveryType,
+    clientName: data.clientName,
+    clientEmail: data.clientEmail,
+    clientPhone: data.clientPhone,
+    notes: data.notes,
+    timezone: data.timezone,
+    waiverAccepted: data.waiverAccepted,
+    clientId: user?.id ?? null,
   });
 
-  if (error || !rows || rows.length === 0) {
-    return { success: false, error: friendlyBookingError(error?.message ?? '') };
+  if (!result.success) {
+    return { success: false, error: friendlyBookingError(result.errorCode) };
   }
 
-  const result = rows[0];
-
-  const { data: service } = await supabase
-    .from('services')
-    .select('name')
-    .eq('id', data.serviceId)
-    .single();
+  const service = await repo.listActiveServices().then((services) => services.find((s) => s.id === data.serviceId));
 
   await notifyBookingConfirmed({
     clientEmail: data.clientEmail,
     clientName: data.clientName,
     serviceName: service?.name ?? 'your session',
-    startTimeIso: result.start_time,
-    bookingReference: result.booking_reference,
-    appointmentId: result.appointment_id,
+    startTimeIso: result.data.startTime,
+    bookingReference: result.data.bookingReference,
+    appointmentId: result.data.appointmentId,
   });
 
   revalidatePath('/booking');
 
-  return {
-    success: true,
-    data: {
-      appointmentId: result.appointment_id,
-      bookingReference: result.booking_reference,
-      managementToken: result.management_token,
-      startTime: result.start_time,
-      endTime: result.end_time,
-      priceCents: result.price_cents,
-      priceUnit: result.price_unit,
-      location: result.location,
-    },
-  };
+  return { success: true, data: result.data };
 }
 
 export async function cancelBookingByToken(input: unknown): Promise<ActionResult<{ cancelled: boolean }>> {

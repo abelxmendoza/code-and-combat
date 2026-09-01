@@ -108,6 +108,7 @@ export type Database = {
           address: string | null;
           meeting_instructions: string | null;
           is_primary: boolean;
+          delivery_type: DeliveryType | null;
           created_at: string;
           updated_at: string;
         };
@@ -198,6 +199,7 @@ export type Database = {
           admin_notes: string | null;
           management_token: string;
           token_expires_at: string;
+          package_id: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -374,6 +376,31 @@ export type Database = {
         Update: Partial<Pick<Database['public']['Tables']['contact_messages']['Row'], 'status'>>;
         Relationships: [];
       };
+      session_packages: {
+        Row: {
+          id: string;
+          package_reference: string;
+          package_type: ServiceCategory;
+          client_name: string;
+          client_email: string;
+          client_phone: string | null;
+          notes: string | null;
+          total_sessions: number;
+          redeemed_sessions: number;
+          price_cents: number;
+          status: 'pending_payment' | 'active' | 'expired' | 'cancelled';
+          management_token: string;
+          token_expires_at: string;
+          purchased_at: string;
+          expires_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        // Real writes only happen via the purchase_session_package() RPC.
+        Insert: Partial<Database['public']['Tables']['session_packages']['Row']>;
+        Update: Partial<Pick<Database['public']['Tables']['session_packages']['Row'], 'status' | 'redeemed_sessions'>>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -434,6 +461,23 @@ export type Database = {
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      purchase_session_package: {
+        Args: {
+          p_package_type: ServiceCategory;
+          p_client_name: string;
+          p_client_email: string;
+          p_client_phone: string | null;
+          p_notes: string | null;
+        };
+        Returns: {
+          package_id: string;
+          package_reference: string;
+          management_token: string;
+          total_sessions: number;
+          price_cents: number;
+          status: string;
+        }[];
       };
     };
   };

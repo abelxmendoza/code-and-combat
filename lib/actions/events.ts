@@ -3,15 +3,14 @@
 import { revalidatePath } from 'next/cache';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { getBookingRepository } from '@/lib/repository';
 import { eventRegistrationSchema } from '@/lib/validation';
 import { notifyEventRegistration } from '@/lib/notifications/notify';
 import type { ActionResult } from './booking';
 
-export interface EventRegistrationConfirmation {
-  registrationId: string;
-  status: string;
-  managementToken: string;
-}
+import type { EventRegistrationConfirmationDto } from '@/lib/repository';
+
+export type EventRegistrationConfirmation = EventRegistrationConfirmationDto;
 
 export interface ManageableEventRegistration {
   id: string;
@@ -95,38 +94,32 @@ export async function registerForEvent(input: unknown): Promise<ActionResult<Eve
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: rows, error } = await supabase.rpc('register_for_event', {
-    p_event_id: data.eventId,
-    p_client_name: data.clientName,
-    p_client_email: data.clientEmail,
-    p_client_phone: data.clientPhone || null,
-    p_client_id: user?.id ?? null,
+  const repo = getBookingRepository();
+  const result = await repo.createWorkshopRegistration({
+    eventId: data.eventId,
+    clientName: data.clientName,
+    clientEmail: data.clientEmail,
+    clientPhone: data.clientPhone,
+    clientId: user?.id ?? null,
   });
 
-  if (error || !rows || rows.length === 0) {
-    return { success: false, error: EVENT_ERROR_MESSAGES[(error?.message ?? '').trim()] ?? 'Unable to register for this workshop.' };
+  if (!result.success) {
+    return { success: false, error: EVENT_ERROR_MESSAGES[result.errorCode] ?? 'Unable to register for this workshop.' };
   }
 
-  const { data: event } = await supabase.from('group_events').select('title, start_time').eq('id', data.eventId).single();
+  const event = await repo.listUpcomingWorkshops().then((workshops) => workshops.find((w) => w.id === data.eventId));
 
   await notifyEventRegistration({
     clientEmail: data.clientEmail,
     eventTitle: event?.title ?? 'the workshop',
-    startTimeIso: event?.start_time ?? '',
-    status: rows[0].status,
-    registrationId: rows[0].registration_id,
+    startTimeIso: event?.startTime ?? '',
+    status: result.data.status,
+    registrationId: result.data.registrationId,
   });
 
   revalidatePath('/workshops');
 
-  return {
-    success: true,
-    data: {
-      registrationId: rows[0].registration_id,
-      status: rows[0].status,
-      managementToken: rows[0].management_token,
-    },
-  };
+  return { success: true, data: result.data };
 }
 
 export async function cancelEventRegistration(

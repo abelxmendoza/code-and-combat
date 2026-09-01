@@ -1,19 +1,18 @@
 import Link from 'next/link';
-import { Code2, Swords, CalendarCheck, MessageSquare, ClipboardCheck, PartyPopper, Hammer } from 'lucide-react';
-import { getActiveServices } from '@/lib/db/services';
-import { getUpcomingWorkshops } from '@/lib/db/events';
+import { Code2, Swords, CalendarCheck, MessageSquare, ClipboardCheck, PartyPopper, Users, Layers } from 'lucide-react';
+import { getBookingRepository } from '@/lib/repository';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { formatPriceCents } from '@/lib/utils';
 import { formatTimeInTimezone } from '@/lib/timezone';
-
-const DEV_DISCOVERY_SLUG = 'dev-discovery-call';
+import type { BookableService } from '@/types/domain';
 
 export default async function Home() {
-  const services = await getActiveServices();
-  const devDiscoveryCall = services.find((s) => s.slug === DEV_DISCOVERY_SLUG);
-  const featured = services.filter((s) => s.slug !== DEV_DISCOVERY_SLUG).slice(0, 3);
-  const workshops = (await getUpcomingWorkshops()).slice(0, 2);
+  const repo = getBookingRepository();
+  const [services, allWorkshops] = await Promise.all([repo.listActiveServices(), repo.listUpcomingWorkshops()]);
+  const codeService = services.find((s) => s.category === 'code');
+  const combatService = services.find((s) => s.category === 'combat');
+  const workshops = allWorkshops.slice(0, 2);
 
   return (
     <div className="space-y-24 pb-24">
@@ -27,9 +26,9 @@ export default async function Home() {
             Move stronger.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-cb-gray">
-            Software tutoring, robotics mentoring, and beginner Muay Thai instruction from a practitioner, not a
-            guru.
+            Coding &amp; tech tutoring and beginner Muay Thai training from a practitioner, not a guru.
           </p>
+          <p className="text-mono mt-4 text-cb-gray">Private sessions starting at $50.</p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
               <Link href="/booking">Book a Session</Link>
@@ -41,112 +40,44 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Two paths */}
+      {/* Two paths — four offers, presented without a crowded pricing table */}
       <section className="px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-12 text-center text-cb-bone">Two Worlds</h2>
           <div className="grid gap-8 md:grid-cols-2">
-            <div className="card border-l-4 border-l-cb-electric">
-              <Code2 className="mb-4 h-8 w-8 text-cb-electric" aria-hidden="true" />
-              <h3 className="mb-4 text-cb-bone">Code</h3>
-              <p className="mb-6 text-cb-gray">
-                Python, C++, robotics, ROS, AI-assisted development. Learn by building real things.
-              </p>
-              <ul className="space-y-2 text-sm text-cb-gray">
-                <li>One-on-one tutoring</li>
-                <li>Project &amp; portfolio reviews</li>
-                <li>Robotics / ROS mentoring</li>
-                <li>Small-group workshops</li>
-              </ul>
-              <Button asChild variant="secondary" className="mt-6">
-                <Link href="/booking?category=code">Book Code</Link>
-              </Button>
-            </div>
-            <div className="card border-l-4 border-l-cb-crimson">
-              <Swords className="mb-4 h-8 w-8 text-cb-crimson" aria-hidden="true" />
-              <h3 className="mb-4 text-cb-bone">Combat</h3>
-              <p className="mb-6 text-cb-gray">
-                Beginner Muay Thai fundamentals: stance, footwork, pad work, and conditioning.
-              </p>
-              <ul className="space-y-2 text-sm text-cb-gray">
-                <li>Private striking lessons</li>
-                <li>Footwork &amp; defensive movement</li>
-                <li>Pad work &amp; conditioning</li>
-                <li>Small-group outdoor sessions</li>
-              </ul>
-              <Button asChild variant="secondary" className="mt-6">
-                <Link href="/booking?category=combat">Book Combat</Link>
-              </Button>
-            </div>
+            <PathCard
+              icon={Code2}
+              iconColor="text-cb-electric"
+              accent="border-l-cb-electric"
+              title="Code"
+              description="Programming fundamentals, debugging, Git/GitHub, AI coding tools, robotics, and ROS."
+              service={codeService}
+              category="code"
+              hasWorkshop={allWorkshops.some((w) => w.category === 'code')}
+            />
+            <PathCard
+              icon={Swords}
+              iconColor="text-cb-crimson"
+              accent="border-l-cb-crimson"
+              title="Combat"
+              description="Beginner Muay Thai fundamentals: footwork, defense, combinations, pad work, and conditioning."
+              service={combatService}
+              category="combat"
+              hasWorkshop={allWorkshops.some((w) => w.category === 'combat')}
+            />
           </div>
         </div>
       </section>
-
-      {/* Custom development — hire-to-build */}
-      {devDiscoveryCall && (
-        <section className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-5xl rounded border border-cb-electric/40 bg-cb-charcoal p-8 sm:p-12">
-            <div className="flex flex-wrap items-center justify-between gap-6">
-              <div className="max-w-xl">
-                <div className="mb-3 flex items-center gap-2 text-cb-electric">
-                  <Hammer className="h-5 w-5" aria-hidden="true" />
-                  <p className="text-mono">AVAILABLE FOR HIRE</p>
-                </div>
-                <h2 className="mb-2 text-cb-bone">Need something built?</h2>
-                <p className="text-cb-gray">
-                  Personal websites, business landing pages, or a full app idea — I build real software, scoped and
-                  quoted after a free call.
-                </p>
-              </div>
-              <Button asChild size="lg">
-                <Link href={`/booking?service=${devDiscoveryCall.slug}`}>Book a Free Discovery Call</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Featured services */}
-      {featured.length > 0 && (
-        <section className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 flex items-end justify-between">
-              <h2 className="text-cb-bone">Featured Services</h2>
-              <Link href="/services" className="text-sm text-cb-gray underline hover:text-cb-bone">
-                View all
-              </Link>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              {featured.map((service) => (
-                <div key={service.id} className="card flex flex-col gap-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-bold text-cb-bone">{service.name}</h3>
-                    <Badge variant={service.category}>{service.category}</Badge>
-                  </div>
-                  <p className="text-sm text-cb-gray">{service.shortDescription}</p>
-                  <p className="text-mono text-cb-gray">
-                    {service.durationMinutes} min · {formatPriceCents(service.priceCents)}
-                    {service.priceUnit === 'person' ? '/person' : ''}
-                  </p>
-                  <Button asChild size="sm" className="mt-auto">
-                    <Link href={`/booking?service=${service.slug}`}>Book</Link>
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* How booking works */}
       <section className="border-y border-cb-steel bg-cb-charcoal px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-12 text-center text-cb-bone">How Booking Works</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <Step icon={Code2} step="1" title="Pick a service" description="Choose Code or Combat, then the specific session." />
+            <Step icon={Code2} step="1" title="Pick a path" description="Code or Combat, then private, workshop, or package." />
             <Step icon={CalendarCheck} step="2" title="Pick a time" description="Real-time availability shown in your timezone." />
-            <Step icon={MessageSquare} step="3" title="Add your details" description="Name, email, and any notes for the session." />
-            <Step icon={ClipboardCheck} step="4" title="Get confirmed" description="Instant confirmation with a calendar file and manage link." />
+            <Step icon={MessageSquare} step="3" title="Add your details" description="Name, email, phone, and a short note." />
+            <Step icon={ClipboardCheck} step="4" title="Get confirmed" description="Instant confirmation — no payment collected yet." />
           </div>
         </div>
       </section>
@@ -156,9 +87,11 @@ export default async function Home() {
         <div className="mx-auto max-w-3xl">
           <h2 className="mb-6 text-cb-bone">Instructor</h2>
           <p className="mb-4 text-cb-gray">
-            I&apos;m Abel Mendoza — CSUF Computer Science graduate, robotics industry experience, and a 6-1-1
-            amateur Muay Thai competitor. I teach coding fundamentals, robotics/ROS, and AI-assisted development on
-            one side, and beginner-focused striking on the other.
+            I&apos;m Abel Mendoza — a computer science graduate, robotics operations and electronics-testing
+            professional, and a software builder. Former amateur Muay Thai competitor, 6-1-1 official record, and a
+            Brazilian Jiu-Jitsu blue belt. I teach coding fundamentals, robotics/ROS, and AI-assisted development on
+            one side, and beginner-focused striking on the other — as a practical mentor, not a master or elite
+            coach.
           </p>
           <Link href="/about" className="text-cb-bone underline hover:text-cb-crimson">
             Read the full background →
@@ -187,7 +120,10 @@ export default async function Home() {
                     <Badge variant={workshop.category}>{workshop.category}</Badge>
                   </div>
                   <p className="text-mono text-sm text-cb-gray">
-                    {formatTimeInTimezone(new Date(workshop.start_time), 'America/Los_Angeles', 'MMM d, h:mm a zzz')}
+                    {formatTimeInTimezone(new Date(workshop.startTime), 'America/Los_Angeles', 'MMM d, h:mm a zzz')}
+                  </p>
+                  <p className="text-mono text-sm text-cb-gray">
+                    {Math.max(workshop.capacity - workshop.confirmedCount, 0)} of {workshop.capacity} seats left
                   </p>
                   <Button asChild size="sm" variant="secondary" className="mt-4">
                     <Link href="/workshops">Details &amp; registration</Link>
@@ -226,11 +162,12 @@ export default async function Home() {
         <div className="mx-auto max-w-3xl">
           <h2 className="mb-8 text-cb-bone">FAQ</h2>
           <dl className="space-y-6">
-            <Faq q="Do I need experience to start combat training?" a="No — every combat service on this site is beginner-focused. We start with stance, guard, and fundamentals." />
+            <Faq q="Do I need experience to start combat training?" a="No — Private Striking Training and the striking Group Workshop are both beginner-focused. We start with stance, guard, and fundamentals." />
             <Faq q="Is martial arts training here medical advice?" a="No. Sessions are beginner-focused instruction, not medical advice, and a signed waiver is required before participation." />
-            <Faq q="What if I need to reschedule or cancel?" a="Every confirmation includes a secure manage link to reschedule or cancel yourself, subject to the notice window shown at booking." />
-            <Faq q="Do you offer online sessions?" a="Most code services are online or hybrid; combat sessions are in-person in the LA/Orange County area." />
-            <Faq q="How do group sessions work?" a="Small-group services show live remaining capacity — book directly into an open slot, no waiting for approval." />
+            <Faq q="What if I need to reschedule or cancel?" a="Every confirmation includes a manage link to reschedule or cancel, subject to the notice window shown at booking — free up to 24 hours before your session." />
+            <Faq q="Do you offer online sessions?" a="Coding & Tech Tutoring is available online or in person; Private Striking Training and its group workshop are in-person in the LA/Orange County area." />
+            <Faq q="How does the Four-Session Package work?" a="Four 60-minute private sessions for $180, in either Code or Combat. Payment integration is coming soon — booking a package starts a request, and Abel follows up to arrange payment." />
+            <Faq q="How do group workshops work?" a="Each workshop shows live remaining capacity — book directly into an open slot, no waiting for approval." />
           </dl>
         </div>
       </section>
@@ -239,19 +176,67 @@ export default async function Home() {
       <section className="px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl rounded border border-cb-steel bg-cb-dark p-6 text-sm text-cb-gray">
           In-person martial arts sessions serve the LA / Orange County area. Exact meeting locations are shared
-          after booking. Code sessions are available online nationwide.
+          after booking. Coding &amp; Tech Tutoring is available online nationwide.
         </div>
       </section>
 
       {/* CTA */}
       <section className="border-t border-cb-steel bg-cb-charcoal px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="mb-6 text-cb-bone">Ready to start?</h2>
+          <h2 className="mb-2 text-cb-bone">Ready to start?</h2>
+          <p className="text-mono mb-6 text-cb-gray">Private sessions starting at $50.</p>
           <Button asChild size="lg">
-            <Link href="/booking">Book Your First Session</Link>
+            <Link href="/booking">Book a Session</Link>
           </Button>
         </div>
       </section>
+    </div>
+  );
+}
+
+function PathCard({
+  icon: Icon,
+  iconColor,
+  accent,
+  title,
+  description,
+  service,
+  category,
+  hasWorkshop,
+}: {
+  icon: typeof Code2;
+  iconColor: string;
+  accent: string;
+  title: string;
+  description: string;
+  service?: BookableService;
+  category: 'code' | 'combat';
+  hasWorkshop: boolean;
+}) {
+  return (
+    <div className={`card border-l-4 ${accent}`}>
+      <Icon className={`mb-4 h-8 w-8 ${iconColor}`} aria-hidden="true" />
+      <h3 className="mb-4 text-cb-bone">{title}</h3>
+      <p className="mb-6 text-cb-gray">{description}</p>
+      <ul className="mb-6 space-y-3 text-sm text-cb-gray">
+        <li className="flex items-center gap-2">
+          <Users className="h-4 w-4 text-cb-bone" aria-hidden="true" />
+          {service ? `Private session — ${formatPriceCents(service.priceCents)} / ${service.durationMinutes} min` : 'Private session'}
+        </li>
+        {hasWorkshop && (
+          <li className="flex items-center gap-2">
+            <PartyPopper className="h-4 w-4 text-cb-bone" aria-hidden="true" />
+            Group workshop — $25/person
+          </li>
+        )}
+        <li className="flex items-center gap-2">
+          <Layers className="h-4 w-4 text-cb-bone" aria-hidden="true" />
+          Four-session package — $180
+        </li>
+      </ul>
+      <Button asChild variant="secondary">
+        <Link href={`/booking?category=${category}`}>Book {title}</Link>
+      </Button>
     </div>
   );
 }

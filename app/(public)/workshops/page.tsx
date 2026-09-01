@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getUpcomingWorkshops } from '@/lib/db/events';
+import { getBookingRepository } from '@/lib/repository';
 import { Badge } from '@/components/ui/badge';
 import { EventRegistrationForm } from '@/components/workshops/event-registration-form';
 import { formatTimeInTimezone } from '@/lib/timezone';
@@ -7,16 +7,16 @@ import { formatPriceCents } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Workshops — Code & Combat by Abel',
-  description: 'Upcoming coding seminars, bootcamps, and small-group training sessions.',
+  description: 'Upcoming coding seminars and beginner striking group classes.',
 };
 
 export default async function WorkshopsPage() {
-  const workshops = await getUpcomingWorkshops();
+  const workshops = await getBookingRepository().listUpcomingWorkshops();
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="mb-2 text-cb-bone">Workshops</h1>
-      <p className="mb-12 text-cb-gray">Small-group coding seminars and combat sessions — limited seats.</p>
+      <p className="mb-12 text-cb-gray">Small-group coding seminars and beginner striking classes — limited seats.</p>
 
       {workshops.length === 0 ? (
         <p className="text-cb-gray">No upcoming workshops scheduled right now. Check back soon.</p>
@@ -33,16 +33,16 @@ export default async function WorkshopsPage() {
                 </div>
                 <p className="mb-4 text-cb-gray">{workshop.description}</p>
                 <div className="mb-4 flex flex-wrap gap-3 text-mono text-cb-gray">
-                  <span>{formatTimeInTimezone(new Date(workshop.start_time), 'America/Los_Angeles', 'EEE MMM d, h:mm a zzz')}</span>
+                  <span>{formatTimeInTimezone(new Date(workshop.startTime), 'America/Los_Angeles', 'EEE MMM d, h:mm a zzz')}</span>
                   <span aria-hidden="true">·</span>
-                  <span>{workshop.duration_minutes} min</span>
+                  <span>{workshop.durationMinutes} min</span>
                   <span aria-hidden="true">·</span>
                   <span>
-                    {formatPriceCents(workshop.price_cents)}
-                    {workshop.price_unit === 'person' ? ' / person' : ''}
+                    {formatPriceCents(workshop.priceCents)}
+                    {workshop.priceUnit === 'person' ? ' / person' : ''}
                   </span>
                   <span aria-hidden="true">·</span>
-                  <span>{workshop.delivery_type}</span>
+                  <span>{workshop.deliveryType}</span>
                 </div>
                 <p className="mb-4 text-sm">
                   {isFull ? (
