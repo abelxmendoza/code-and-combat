@@ -156,9 +156,9 @@ export default async function Home() {
         <div className="mx-auto max-w-3xl">
           <h2 className="mb-6 text-cb-bone">Instructor</h2>
           <p className="mb-4 text-cb-gray">
-            I&apos;m Abel Mendoza — CS graduate, robotics field-operations technician, and a 6-0 amateur Muay Thai
-            competitor. I teach coding fundamentals, robotics/ROS, and AI-assisted development on one side, and
-            beginner-focused striking on the other.
+            I&apos;m Abel Mendoza — CSUF Computer Science graduate, robotics industry experience, and a 6-1-1
+            amateur Muay Thai competitor. I teach coding fundamentals, robotics/ROS, and AI-assisted development on
+            one side, and beginner-focused striking on the other.
           </p>
           <Link href="/about" className="text-cb-bone underline hover:text-cb-crimson">
             Read the full background →

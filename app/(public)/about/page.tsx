@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'About — Code & Combat by Abel',
-  description: 'Abel Mendoza: CS graduate, robotics field technician, and 6-0 amateur Muay Thai competitor teaching in LA/OC.',
+  description: 'Abel Mendoza: CSUF Computer Science graduate, robotics industry experience, and a 6-1-1 amateur Muay Thai competitor teaching in LA/OC.',
 };
 
 export default function AboutPage() {
@@ -20,18 +20,19 @@ export default function AboutPage() {
         <section>
           <h2 className="mb-4 text-cb-electric">Code</h2>
           <p className="text-cb-gray">
-            Computer science degree, plus field time that doesn&apos;t show up in a classroom: robotics operations,
-            electronics testing and validation, and troubleshooting hardware that has to work in the real world, not
-            just in simulation. I build software day to day — Python, C++, ROS, Git — and use current AI-assisted
-            development tools as part of that workflow, not as a replacement for understanding what the code does.
-            I built LoreBook, a personal knowledge and memory platform, from scratch.
+            Bachelor&apos;s degree in Computer Science from Cal State Fullerton, plus field time that doesn&apos;t
+            show up in a classroom: robotics industry experience — operations, electronics testing and validation,
+            and troubleshooting hardware that has to work in the real world, not just in simulation. I build software
+            day to day — Python, C++, ROS, Git — and use current AI-assisted development tools as part of that
+            workflow, not as a replacement for understanding what the code does. I built LoreBook, a personal
+            knowledge and memory platform, from scratch.
           </p>
         </section>
 
         <section>
           <h2 className="mb-4 text-cb-crimson">Combat</h2>
           <p className="text-cb-gray">
-            6-0 amateur Muay Thai record. Brazilian Jiu-Jitsu blue belt. I teach beginner striking fundamentals —
+            6-1-1 amateur Muay Thai record. Brazilian Jiu-Jitsu blue belt. I teach beginner striking fundamentals —
             stance, guard, footwork, pad work, and conditioning — the same way I&apos;d coach someone before their
             first fight, without the pressure of one. This is beginner-focused instruction, not medical advice, and
             not a shortcut to a fight camp.
