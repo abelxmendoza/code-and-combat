@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/layout/logo';
 
 const NAV_LINKS = [
+  { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
-  { href: '/workshops', label: 'Workshops' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];

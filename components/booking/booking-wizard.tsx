@@ -257,7 +257,6 @@ export function BookingWizard({
         <OfferTypeStep
           category={draft.category}
           privateService={privateService}
-          hasWorkshops={categoryWorkshops.length > 0}
           onSelect={handleOfferType}
           onBack={() => dispatch(setWizardStep('category'))}
         />

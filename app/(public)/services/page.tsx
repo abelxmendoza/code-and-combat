@@ -1,22 +1,21 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Users, PartyPopper, Layers } from 'lucide-react';
+import Image from 'next/image';
+import { Users, Layers, AppWindow, UserRound, Store } from 'lucide-react';
 import { getBookingRepository } from '@/lib/repository';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatPriceCents } from '@/lib/utils';
-import { formatTimeInTimezone } from '@/lib/timezone';
 import type { BookableService } from '@/types/domain';
-import type { WorkshopDto } from '@/lib/repository';
 
 export const metadata: Metadata = {
   title: 'Services — Code & Combat by Abel',
-  description: 'Coding & tech tutoring and private striking training in LA/OC — private sessions, group workshops, or a four-session package.',
+  description: 'One-on-one coding lessons and private striking training in LA/OC, plus custom software and website development.',
 };
 
 export default async function ServicesPage() {
   const repo = getBookingRepository();
-  const [services, workshops] = await Promise.all([repo.listActiveServices(), repo.listUpcomingWorkshops()]);
+  const services = await repo.listActiveServices();
   const codeService = services.find((s) => s.category === 'code');
   const combatService = services.find((s) => s.category === 'combat');
 
@@ -24,66 +23,104 @@ export default async function ServicesPage() {
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="mb-2 text-cb-bone">Services</h1>
       <p className="mb-12 max-w-2xl text-cb-gray">
-        Four ways to work with Abel — kept simple on purpose. Private sessions starting at $50.
+        Start with one-on-one Code or Combat lessons. Custom software and website development is also available.
       </p>
 
-      <div className="space-y-16">
-        {codeService && <OfferSection service={codeService} accent="border-l-cb-electric" badgeVariant="code" />}
-        {combatService && <OfferSection service={combatService} accent="border-l-cb-purple" badgeVariant="combat" />}
-
-        <section>
-          <div className="mb-6 flex items-center gap-3">
-            <PartyPopper className="h-6 w-6 text-cb-electric" aria-hidden="true" />
-            <h2 className="text-cb-bone">Group Workshop</h2>
-          </div>
-          <p className="mb-6 max-w-2xl text-cb-gray">
-            A coding seminar or a beginner striking class, run in a small group — $25 per person, 90 minutes by
-            default. Topic, date, capacity, and remaining seats are shown for each upcoming session.
+      <div className="flex flex-col gap-16">
+        <section
+          id="development"
+          className="section-glow relative order-2 -mx-4 scroll-mt-24 overflow-hidden rounded border border-cb-cyan/25 bg-cb-charcoal/40 px-4 py-12 shadow-cb-lg sm:px-8 sm:py-14"
+        >
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-cb-cyan to-transparent" />
+          <p className="label-caps mb-3 text-cb-cyan">Also Available · Freelance Development</p>
+          <h2 className="mb-4 text-cb-bone">Built for your next idea or your growing business.</h2>
+          <p className="mb-10 max-w-3xl text-cb-gray">
+            Need a new product, a professional online presence, or help improving software you already use? Every
+            project starts with your goals, then moves into a clear scope and tailored quote.
           </p>
-          {workshops.length === 0 ? (
-            <p className="text-cb-gray">No workshops scheduled right now — check back soon.</p>
-          ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {workshops.map((w) => (
-                <WorkshopCard key={w.id} workshop={w} />
-              ))}
-            </div>
-          )}
-          <Button asChild variant="secondary" className="mt-6">
-            <Link href="/workshops">View all workshops</Link>
-          </Button>
-        </section>
-
-        <section>
-          <div className="mb-6 flex items-center gap-3">
-            <Layers className="h-6 w-6 text-cb-electric" aria-hidden="true" />
-            <h2 className="text-cb-bone">Four-Session Package</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            <DevelopmentCard
+              icon={AppWindow}
+              title="Software & App Development"
+              description="Web applications, MVPs, internal tools, workflow automation, integrations, and focused improvements to existing software."
+            />
+            <DevelopmentCard
+              icon={UserRound}
+              title="Personal Websites"
+              description="Portfolio, résumé, personal brand, and landing-page websites designed to showcase your skills, story, and work."
+            />
+            <DevelopmentCard
+              icon={Store}
+              title="Business Websites"
+              description="Professional service websites with clear messaging, responsive design, lead capture, booking paths, and room to grow."
+            />
           </div>
-          <div className="card max-w-2xl">
-            <p className="mb-4 text-cb-gray">
-              Four 60-minute private sessions, bundled at a lower per-session rate — choose Coding &amp; Tech
-              Tutoring or Private Striking Training when you book.
-            </p>
-            <div className="mb-4 flex flex-wrap items-center gap-3 text-mono text-cb-gray">
-              <span>4 × 60 min</span>
-              <span aria-hidden="true">·</span>
-              <span>{formatPriceCents(18000)} total</span>
-            </div>
-            <p className="mb-4 text-sm text-cb-amber">
-              Payment integration is coming soon — booking a package starts a request; Abel follows up to arrange
-              payment.
-            </p>
-            <Button asChild>
-              <Link href="/booking">Get started</Link>
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <Button asChild className="border-cb-cyan bg-cb-black shadow-cb-glow-cyan hover:border-cb-cyan hover:bg-cb-cyan-deep/30">
+              <Link href="/contact?inquiry=development">Request a Project Quote</Link>
             </Button>
+            <p className="text-mono text-cb-muted">Scope and pricing are tailored to each project.</p>
           </div>
         </section>
 
-        <p className="max-w-2xl rounded border border-cb-amber/40 bg-cb-dark p-4 text-sm text-cb-gray">
-          Martial arts sessions are beginner-focused and are not medical advice. Participation requires accepting a
-          waiver, presented during booking. In-person sessions serve the LA / Orange County area.
-        </p>
+        <div className="section-glow order-1 -mx-4 rounded border border-cb-steel/70 bg-cb-charcoal/40 px-4 py-10 shadow-cb-lg sm:px-8">
+          <p className="label-caps mb-3 text-cb-cyan">Start Here</p>
+          <h2 className="mb-3 text-cb-bone">Code &amp; Combat Lessons</h2>
+          <p className="mb-10 max-w-2xl text-cb-gray">Focused one-on-one instruction, clear next steps, and practical work you can build on between sessions.</p>
+          <div className="space-y-16">
+            {codeService && <OfferSection service={codeService} accent="border-l-cb-cyan" badgeVariant="code" />}
+            {combatService && <OfferSection service={combatService} accent="border-l-cb-gold" badgeVariant="combat" />}
+
+            <section>
+              <div className="mb-6 flex items-center gap-3">
+                <Layers className="h-6 w-6 text-cb-electric" aria-hidden="true" />
+                <h2 className="text-cb-bone">Four-Session Package</h2>
+              </div>
+              <div className="card card-interactive max-w-2xl border-t-2 border-t-cb-electric/70">
+                <p className="mb-4 text-cb-gray">
+                  Four 60-minute private sessions, bundled at a lower per-session rate — choose Coding &amp; Tech
+                  Tutoring or Private Striking Training when you book.
+                </p>
+                <div className="mb-4 flex flex-wrap items-center gap-3 text-mono text-cb-gray">
+                  <span>4 × 60 min</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{formatPriceCents(18000)} total</span>
+                </div>
+                <p className="mb-4 text-sm text-cb-amber">
+                  Payment integration is coming soon — booking a package starts a request; Abel follows up to arrange
+                  payment.
+                </p>
+                <Button asChild>
+                  <Link href="/booking">Get started</Link>
+                </Button>
+              </div>
+            </section>
+
+            <p className="max-w-2xl rounded border border-cb-amber/40 bg-cb-dark p-4 text-sm text-cb-gray">
+              Martial arts sessions are beginner-focused and are not medical advice. Participation requires accepting
+              a waiver, presented during booking. In-person sessions serve the LA / Orange County area.
+            </p>
+          </div>
+        </div>
       </div>
+    </div>
+  );
+}
+
+function DevelopmentCard({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: typeof AppWindow;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="card card-interactive card-code border-t-2 border-t-cb-cyan/70">
+      <Icon className="mb-4 h-7 w-7 text-cb-cyan" aria-hidden="true" />
+      <h3 className="mb-3 text-xl text-cb-bone">{title}</h3>
+      <p className="text-sm text-cb-gray">{description}</p>
     </div>
   );
 }
@@ -97,42 +134,51 @@ function OfferSection({
   accent: string;
   badgeVariant: 'code' | 'combat';
 }) {
-  return (
-    <section className={`border-l-4 ${accent} pl-6`}>
-      <div className="mb-3 flex items-center gap-3">
-        <Users className="h-6 w-6 text-cb-bone" aria-hidden="true" />
-        <h2 className="text-cb-bone">{service.name}</h2>
-        <Badge variant={badgeVariant}>{badgeVariant}</Badge>
-      </div>
-      <p className="mb-4 max-w-2xl text-cb-gray">{service.fullDescription}</p>
-      <div className="mb-4 flex flex-wrap items-center gap-3 text-mono text-cb-gray">
-        <span>{service.durationMinutes} min</span>
-        <span aria-hidden="true">·</span>
-        <span>{formatPriceCents(service.priceCents)}</span>
-        <span aria-hidden="true">·</span>
-        <span>{service.deliveryType === 'hybrid' ? 'online or in person' : service.deliveryType}</span>
-      </div>
-      <Button asChild>
-        <Link href={`/booking?service=${service.slug}`}>Book</Link>
-      </Button>
-    </section>
-  );
-}
+  const isCode = badgeVariant === 'code';
+  const imageSrc = isCode ? '/meComputer.jpg' : '/meFighter.jpg';
+  const imageAlt = isCode
+    ? 'Abel Mendoza working on software at his laptop'
+    : 'Abel Mendoza holding a Muay Thai trophy with his hand wrapped';
 
-function WorkshopCard({ workshop }: { workshop: WorkshopDto }) {
-  const seatsRemaining = Math.max(workshop.capacity - workshop.confirmedCount, 0);
   return (
-    <div className="card">
-      <div className="mb-2 flex items-start justify-between gap-2">
-        <h3 className="font-bold text-cb-bone">{workshop.title}</h3>
-        <Badge variant={workshop.category}>{workshop.category}</Badge>
+    <section className={`group card card-interactive border-l-4 ${accent} ${isCode ? 'card-code' : 'card-combat'}`}>
+      <div className="grid gap-7 md:grid-cols-[220px_1fr]">
+        <div className="relative aspect-[4/5] overflow-hidden rounded border border-cb-steel md:aspect-auto md:min-h-[340px]">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 768px) 100vw, 220px"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            style={{ objectPosition: isCode ? 'center 42%' : 'center 24%' }}
+          />
+          <div className={`pointer-events-none absolute inset-0 bg-gradient-to-t ${isCode ? 'from-cb-cyan-deep/55' : 'from-cb-void/65'} via-transparent to-transparent`} />
+        </div>
+        <div>
+          <div className="mb-3 flex flex-wrap items-center gap-3">
+            <Users className={`h-6 w-6 ${isCode ? 'text-cb-cyan' : 'text-cb-gold'}`} aria-hidden="true" />
+            <h2 className="text-cb-bone">{service.name}</h2>
+            <Badge variant={badgeVariant}>{badgeVariant}</Badge>
+          </div>
+          <p className="mb-4 max-w-2xl text-cb-gray">{service.fullDescription}</p>
+          {isCode && (
+            <p className="mb-4 max-w-2xl rounded border border-cb-cyan/30 bg-cb-cyan-deep/20 p-4 text-sm text-cb-gray">
+              <strong className="text-cb-cyan">College mentorship included:</strong> support for community college and
+              university students working through coursework, projects, and the transition into practical development.
+            </p>
+          )}
+          <div className="mb-4 flex flex-wrap items-center gap-3 text-mono text-cb-gray">
+            <span>{service.durationMinutes} min</span>
+            <span aria-hidden="true">·</span>
+            <span>{formatPriceCents(service.priceCents)}</span>
+            <span aria-hidden="true">·</span>
+            <span>{service.deliveryType === 'hybrid' ? 'online or in person' : service.deliveryType}</span>
+          </div>
+          <Button asChild>
+            <Link href={`/booking?service=${service.slug}`}>Book</Link>
+          </Button>
+        </div>
       </div>
-      <p className="text-mono text-sm text-cb-gray">
-        {formatTimeInTimezone(new Date(workshop.startTime), 'America/Los_Angeles', 'MMM d, h:mm a zzz')}
-      </p>
-      <p className="text-mono text-sm text-cb-gray">
-        {formatPriceCents(workshop.priceCents)}/person · {seatsRemaining} of {workshop.capacity} seats left
-      </p>
-    </div>
+    </section>
   );
 }

@@ -65,7 +65,66 @@ h3 {
 /* Base panel — thin border, sharp corners, near-black surface. The
    "technical equipment panel" look: no soft glassmorphism, no big shadow. */
 .card {
-  @apply rounded border border-cb-steel bg-cb-charcoal p-6 shadow-cb-sm transition-colors;
+  @apply rounded border border-cb-steel bg-cb-charcoal p-6 shadow-cb-md transition-all duration-300;
+}
+
+.card-interactive {
+  @apply relative overflow-hidden hover:-translate-y-1 hover:border-cb-electric/60 hover:shadow-cb-glow-md;
+}
+
+.card-interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.85), rgba(34, 211, 238, 0.7), transparent);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.card-interactive:hover::before,
+.card-interactive:focus-within::before {
+  opacity: 1;
+}
+
+.card-code:hover {
+  border-color: rgba(34, 211, 238, 0.55);
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.24), 0 16px 40px rgba(34, 211, 238, 0.12);
+}
+
+.card-combat:hover {
+  border-color: rgba(245, 158, 11, 0.48);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.2), 0 16px 40px rgba(109, 40, 217, 0.16);
+}
+
+.section-glow {
+  background-image:
+    radial-gradient(ellipse 35% 45% at 12% 45%, rgba(34, 211, 238, 0.07), transparent 75%),
+    radial-gradient(ellipse 40% 50% at 88% 50%, rgba(109, 40, 217, 0.11), transparent 75%);
+  background-repeat: no-repeat;
+}
+
+.animate-rise {
+  animation: rise-in 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .input-field {
@@ -112,11 +171,12 @@ h3 {
    only the later one would win; this composes them explicitly. */
 .hero-atmosphere {
   background-image:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(109, 40, 217, 0.16), transparent 70%),
+    radial-gradient(ellipse 45% 45% at 70% 0%, rgba(109, 40, 217, 0.2), transparent 72%),
+    radial-gradient(ellipse 35% 40% at 25% 15%, rgba(34, 211, 238, 0.1), transparent 72%),
     linear-gradient(to right, rgba(139, 92, 246, 0.07) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(139, 92, 246, 0.07) 1px, transparent 1px);
-  background-repeat: no-repeat, repeat, repeat;
-  background-size: 100% 100%, 48px 48px, 48px 48px;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
 }
 
 /* Scrollbar styling */

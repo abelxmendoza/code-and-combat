@@ -13,7 +13,7 @@ import { submitContactMessage } from '@/lib/actions/contact';
 const formSchema = z.object({
   name: z.string().trim().min(2, 'Enter your name.').max(100),
   email: z.string().trim().email('Enter a valid email address.'),
-  inquiryType: z.enum(['code', 'combat', 'workshop', 'development', 'general']),
+  inquiryType: z.enum(['code', 'combat', 'development', 'general']),
   preferredContactMethod: z.enum(['email', 'phone']),
   message: z.string().trim().min(10, 'Say a bit more — at least 10 characters.').max(2000),
   // Deliberately unrestricted — see lib/validation.ts's contactSchema for why
@@ -22,7 +22,7 @@ const formSchema = z.object({
 });
 type FormValues = z.infer<typeof formSchema>;
 
-export function ContactForm() {
+export function ContactForm({ defaultInquiryType = 'general' }: { defaultInquiryType?: FormValues['inquiryType'] }) {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const renderedAt = useRef(Date.now());
@@ -34,7 +34,7 @@ export function ContactForm() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { inquiryType: 'general', preferredContactMethod: 'email' },
+    defaultValues: { inquiryType: defaultInquiryType, preferredContactMethod: 'email' },
   });
 
   async function onSubmit(values: FormValues) {
@@ -86,9 +86,8 @@ export function ContactForm() {
           <select id="inquiryType" className="input-field w-full" {...register('inquiryType')}>
             <option value="general">General</option>
             <option value="development">Website / App Development</option>
-            <option value="code">Code Tutoring</option>
+            <option value="code">Code &amp; College Mentorship</option>
             <option value="combat">Combat</option>
-            <option value="workshop">Workshop</option>
           </select>
         </div>
         <div>

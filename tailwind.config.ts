@@ -26,6 +26,9 @@ const config: Config = {
         'cb-purple-deep': '#2e1065', // pressed/hover-dark, deep blacklight purple
         'cb-electric': '#8b5cf6', // bright ultraviolet — hover glow, active/confirmed states
         'cb-void': '#170b26', // atmospheric gradients only, never text/borders
+        'cb-cyan': '#22d3ee', // code, technology, and interactive highlights
+        'cb-cyan-deep': '#083344', // subtle cyan-tinted surfaces
+        'cb-gold': '#f59e0b', // combat and momentum highlights
         // Reserved semantic colors — kept separate from the brand accent so
         // errors/warnings never get lost in the purple glow.
         'cb-danger': '#ef4444',
@@ -49,6 +52,8 @@ const config: Config = {
         'cb-lg': '0 10px 30px rgba(0, 0, 0, 0.6)',
         'cb-glow-sm': '0 0 0 1px rgba(139, 92, 246, 0.4), 0 0 12px rgba(139, 92, 246, 0.15)',
         'cb-glow-md': '0 0 0 1px rgba(139, 92, 246, 0.5), 0 0 24px rgba(139, 92, 246, 0.25)',
+        'cb-glow-cyan': '0 0 0 1px rgba(34, 211, 238, 0.35), 0 10px 30px rgba(34, 211, 238, 0.12)',
+        'cb-glow-gold': '0 0 0 1px rgba(245, 158, 11, 0.3), 0 10px 30px rgba(245, 158, 11, 0.1)',
       },
       backgroundImage: {
         'gradient-grain':

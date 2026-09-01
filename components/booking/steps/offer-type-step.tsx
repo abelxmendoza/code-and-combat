@@ -1,6 +1,6 @@
 'use client';
 
-import { Users, PartyPopper, Layers } from 'lucide-react';
+import { Users, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn, formatPriceCents } from '@/lib/utils';
 import type { BookableService, ServiceCategory } from '@/types/domain';
@@ -9,13 +9,11 @@ import type { OfferType } from '@/store/bookingSlice';
 export function OfferTypeStep({
   category,
   privateService,
-  hasWorkshops,
   onSelect,
   onBack,
 }: {
   category: ServiceCategory;
   privateService?: BookableService;
-  hasWorkshops: boolean;
   onSelect: (offerType: OfferType) => void;
   onBack: () => void;
 }) {
@@ -24,9 +22,9 @@ export function OfferTypeStep({
   return (
     <div>
       <h2 className="mb-2 text-cb-bone">How would you like to train?</h2>
-      <p className="mb-8 text-cb-gray">Three ways to get started — pick the one that fits.</p>
+      <p className="mb-8 text-cb-gray">Pick the option that fits.</p>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2">
         <OfferCard
           icon={Users}
           title="Private Session"
@@ -36,14 +34,6 @@ export function OfferTypeStep({
           disabled={!privateService}
         />
         <OfferCard
-          icon={PartyPopper}
-          title="Group Workshop"
-          description="A small-group class or seminar with live availability shown."
-          meta={hasWorkshops ? 'Upcoming dates available' : 'None scheduled right now'}
-          onClick={() => onSelect('workshop')}
-          disabled={!hasWorkshops}
-        />
-        <OfferCard
           icon={Layers}
           title="Four-Session Package"
           description={`Four ${label.toLowerCase()} sessions, bundled.`}
@@ -51,6 +41,8 @@ export function OfferTypeStep({
           onClick={() => onSelect('package')}
         />
       </div>
+
+      <p className="text-mono mt-5 text-cb-muted">Small-group workshops are coming later.</p>
 
       <div className="mt-8">
         <Button type="button" variant="secondary" onClick={onBack}>

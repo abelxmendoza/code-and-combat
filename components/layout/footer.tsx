@@ -16,6 +16,16 @@ export function Footer() {
             <h4 className="label-caps mb-4">Services</h4>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link href="/services#development" className="text-cb-gray transition-colors hover:text-cb-bone">
+                  Software &amp; App Development
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#development" className="text-cb-gray transition-colors hover:text-cb-bone">
+                  Personal &amp; Business Websites
+                </Link>
+              </li>
+              <li>
                 <Link href="/services?category=code" className="text-cb-gray transition-colors hover:text-cb-bone">
                   Coding Tutoring
                 </Link>
@@ -23,11 +33,6 @@ export function Footer() {
               <li>
                 <Link href="/services?category=combat" className="text-cb-gray transition-colors hover:text-cb-bone">
                   Martial Arts
-                </Link>
-              </li>
-              <li>
-                <Link href="/workshops" className="text-cb-gray transition-colors hover:text-cb-bone">
-                  Workshops
                 </Link>
               </li>
             </ul>
