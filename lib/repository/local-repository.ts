@@ -70,15 +70,37 @@ interface StoredPackage {
   managementToken: string;
 }
 
-const appointments: StoredAppointment[] = [];
-const registrations: StoredRegistration[] = [];
-const packages: StoredPackage[] = [];
+/**
+ * Next.js dev compiles Server Actions and RSC page renders into separate
+ * module graphs, so a plain module-level `let`/`const` array here ends up
+ * as a distinct copy per graph rather than a true singleton — writes from
+ * a server action (e.g. createBooking) would silently be invisible to a
+ * page render's read (e.g. listUpcomingWorkshops). Anchoring on
+ * `globalThis` sidesteps that: it's one Node process-wide object no
+ * matter how many times this module gets re-evaluated by the bundler.
+ */
+const globalStore = globalThis as unknown as {
+  __cbLocalRepoState?: {
+    appointments: StoredAppointment[];
+    registrations: StoredRegistration[];
+    packages: StoredPackage[];
+    referenceCounter: number;
+  };
+};
+const state = (globalStore.__cbLocalRepoState ??= {
+  appointments: [],
+  registrations: [],
+  packages: [],
+  referenceCounter: 0,
+});
+const appointments = state.appointments;
+const registrations = state.registrations;
+const packages = state.packages;
 
-let referenceCounter = 0;
 function generateReference(prefix: string): string {
-  referenceCounter += 1;
+  state.referenceCounter += 1;
   const stamp = new Date().toISOString().slice(2, 10).replace(/-/g, '');
-  return `${prefix}-${stamp}-LOCAL${String(referenceCounter).padStart(3, '0')}`;
+  return `${prefix}-${stamp}-LOCAL${String(state.referenceCounter).padStart(3, '0')}`;
 }
 
 function generateToken(): string {
