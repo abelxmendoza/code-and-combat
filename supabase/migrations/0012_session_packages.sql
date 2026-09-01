@@ -60,6 +60,7 @@ create or replace function public.generate_package_reference()
 returns text
 language sql
 volatile
+set search_path = public, extensions
 as $$
   select 'CC-PKG-' || to_char(now(), 'YYMMDD') || '-' || upper(encode(gen_random_bytes(3), 'hex'));
 $$;
@@ -83,7 +84,7 @@ create or replace function public.purchase_session_package(
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_reference text;
@@ -145,7 +146,7 @@ create or replace function public.book_appointment(
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_service public.services%rowtype;

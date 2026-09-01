@@ -71,6 +71,7 @@ create or replace function public.generate_booking_reference()
 returns text
 language sql
 volatile
+set search_path = public, extensions
 as $$
   select 'CC-' || to_char(now(), 'YYMMDD') || '-' || upper(encode(gen_random_bytes(3), 'hex'));
 $$;
@@ -100,7 +101,7 @@ create or replace function public.book_appointment(
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_service public.services%rowtype;
@@ -354,7 +355,7 @@ create or replace function public.register_for_event(
 )
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_event public.group_events%rowtype;
