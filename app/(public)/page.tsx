@@ -29,7 +29,9 @@ export default async function Home() {
             One-on-one coding, college, and university mentorship — plus beginner Muay Thai lessons grounded in
             real-world experience.
           </p>
-          <p className="text-mono mt-4 text-cb-cyan">Private Code and Combat sessions starting at $50.</p>
+          <p className="text-mono mt-5 inline-flex items-center gap-1.5 rounded-full border border-cb-cyan/40 bg-cb-cyan-deep/25 px-4 py-1.5 text-base font-semibold text-cb-cyan shadow-cb-glow-cyan">
+            Private Code and Combat sessions starting at <span className="text-lg">$50</span>
+          </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
               <Link href="/booking">Book Code or Combat</Link>
@@ -182,7 +184,9 @@ export default async function Home() {
       <section className="border-t border-cb-steel bg-cb-charcoal px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="mb-2 text-cb-bone">Ready to start?</h2>
-          <p className="text-mono mb-6 text-cb-gray">Private sessions starting at $50.</p>
+          <p className="text-mono mb-6 inline-flex items-center gap-1.5 rounded-full border border-cb-cyan/40 bg-cb-cyan-deep/25 px-4 py-1.5 text-base font-semibold text-cb-cyan shadow-cb-glow-cyan">
+            Private sessions starting at <span className="text-lg">$50</span>
+          </p>
           <Button asChild size="lg">
             <Link href="/booking">Book a Session</Link>
           </Button>
