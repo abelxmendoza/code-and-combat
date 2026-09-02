@@ -8,13 +8,13 @@ import type { OfferType } from '@/store/bookingSlice';
 
 export function OfferTypeStep({
   category,
-  privateService,
+  privateServices,
   onSelect,
   onBack,
 }: {
   category: ServiceCategory;
-  privateService?: BookableService;
-  onSelect: (offerType: OfferType) => void;
+  privateServices: BookableService[];
+  onSelect: (offerType: OfferType, serviceId?: string) => void;
   onBack: () => void;
 }) {
   const label = category === 'code' ? 'Coding & Tech Tutoring' : 'Private Striking Training';
@@ -25,14 +25,16 @@ export function OfferTypeStep({
       <p className="mb-8 text-cb-gray">Pick the option that fits.</p>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <OfferCard
-          icon={Users}
-          title="Private Session"
-          description={privateService?.shortDescription ?? label}
-          meta={privateService ? `${privateService.durationMinutes} min · ${formatPriceCents(privateService.priceCents)}` : undefined}
-          onClick={() => onSelect('private')}
-          disabled={!privateService}
-        />
+        {privateServices.map((service) => (
+          <OfferCard
+            key={service.id}
+            icon={Users}
+            title={service.name}
+            description={service.shortDescription}
+            meta={`${service.durationMinutes} min · ${formatPriceCents(service.priceCents)}`}
+            onClick={() => onSelect('private', service.id)}
+          />
+        ))}
         <OfferCard
           icon={Layers}
           title="Four-Session Package"

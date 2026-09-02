@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Users, Layers, AppWindow, UserRound, Store } from 'lucide-react';
+import { Users, Layers, AppWindow, UserRound, Store, Swords } from 'lucide-react';
 import { getBookingRepository } from '@/lib/repository';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,7 @@ export default async function ServicesPage() {
   const services = await repo.listActiveServices();
   const codeService = services.find((s) => s.category === 'code');
   const combatService = services.find((s) => s.category === 'combat');
+  const assWhoopingService = services.find((s) => s.slug === 'ass-whooping-package');
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
@@ -70,6 +71,28 @@ export default async function ServicesPage() {
           <div className="space-y-16">
             {codeService && <OfferSection service={codeService} accent="border-l-cb-cyan" badgeVariant="code" />}
             {combatService && <OfferSection service={combatService} accent="border-l-cb-gold" badgeVariant="combat" />}
+            {assWhoopingService && (
+              <section>
+                <div className="mb-6 flex items-center gap-3">
+                  <Swords className="h-6 w-6 text-cb-gold" aria-hidden="true" />
+                  <h2 className="text-cb-bone">{assWhoopingService.name}</h2>
+                  <Badge variant="combat">combat</Badge>
+                </div>
+                <div className="card card-interactive card-combat max-w-2xl border-t-2 border-t-cb-gold/70">
+                  <p className="mb-4 text-cb-gray">{assWhoopingService.fullDescription}</p>
+                  <div className="mb-4 flex flex-wrap items-center gap-3 text-mono text-cb-gray">
+                    <span>{assWhoopingService.durationMinutes} min</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{formatPriceCents(assWhoopingService.priceCents)}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{assWhoopingService.deliveryType}</span>
+                  </div>
+                  <Button asChild>
+                    <Link href={`/booking?service=${assWhoopingService.slug}`}>Book</Link>
+                  </Button>
+                </div>
+              </section>
+            )}
 
             <section>
               <div className="mb-6 flex items-center gap-3">

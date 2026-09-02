@@ -4,12 +4,17 @@
 --   supabase db push --include-seed
 -- or by pasting into the SQL editor.
 --
--- Exactly four primary customer-facing offers, on purpose — see
--- lib/data/offers.ts for the single source of truth this file mirrors:
+-- Primary customer-facing offers, on purpose — see lib/data/offers.ts for
+-- the single source of truth this file mirrors:
 --   1. Coding & Tech Tutoring (private session, this table)
 --   2. Private Striking Training (private session, this table)
---   3. Group Workshop (instances live in group_events, below)
---   4. Four-Session Package (purchased at booking time, no seed row —
+--   3. $50 Ass-Whooping Package (private session, this table — a second,
+--      higher-intensity combat offering; booked via its own direct link
+--      on the services page rather than the category/offer-type picker,
+--      since that picker still assumes one canonical private service
+--      per category — see booking-wizard.tsx's privateService lookup)
+--   4. Group Workshop (instances live in group_events, below)
+--   5. Four-Session Package (purchased at booking time, no seed row —
 --      see the purchase_session_package() function)
 -- Prices/durations are configurable starting points — edit via the admin
 -- dashboard once live, not by hand-editing this file after go-live.
@@ -40,6 +45,15 @@ values
     'combat', 60, 15, 5000, 'session', 'in-person', 1,
     'Wear athletic clothing and bring water. Hand wraps and gloves can be provided if you don''t have your own — just ask ahead of time.',
     true, true, 2
+  ),
+  (
+    'ass-whooping-package',
+    '$50 Ass-Whooping Package',
+    'You step in. Pads go on. Abel gets to work. You leave sweaty, humbled, and grinning.',
+    'I open a can of whoop ass. Austin 3:16.',
+    'combat', 60, 15, 5000, 'session', 'in-person', 1,
+    'Wear athletic clothing and bring water. Hand wraps and gloves can be provided if you don''t have your own. Bring your ego — you''ll need it, then you''ll lose it.',
+    true, true, 3
   );
 
 -- Hybrid coding tutoring gets both a video-call and an in-person location,
@@ -56,6 +70,10 @@ from public.services where slug = 'coding-tutoring';
 insert into public.service_locations (service_id, label, meeting_instructions, is_primary, delivery_type)
 select id, 'LA / Orange County area', 'Exact address or meeting point is shared after booking, based on your general location.', true, 'in-person'
 from public.services where slug = 'private-striking-training';
+
+insert into public.service_locations (service_id, label, meeting_instructions, is_primary, delivery_type)
+select id, 'LA / Orange County area', 'Exact address or meeting point is shared after booking, based on your general location.', true, 'in-person'
+from public.services where slug = 'ass-whooping-package';
 
 -- ---------------------------------------------------------------------------
 -- Recurring weekly availability (business timezone: America/Los_Angeles)

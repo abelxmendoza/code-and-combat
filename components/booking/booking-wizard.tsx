@@ -94,9 +94,13 @@ export function BookingWizard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const privateService = useMemo(
-    () => services.find((s) => s.category === draft.category && s.maxParticipants === 1),
+  const privateServices = useMemo(
+    () => services.filter((s) => s.category === draft.category && s.maxParticipants === 1),
     [services, draft.category],
+  );
+  const privateService = useMemo(
+    () => (draft.serviceId && services.find((s) => s.id === draft.serviceId)) || privateServices[0],
+    [services, draft.serviceId, privateServices],
   );
   const categoryWorkshops = useMemo(
     () => workshops.filter((w) => w.category === draft.category),
@@ -107,13 +111,15 @@ export function BookingWizard({
   const progressSteps = draft.offerType === 'workshop' ? WORKSHOP_STEPS : draft.offerType === 'package' ? PACKAGE_STEPS : PRIVATE_STEPS;
   const timezone = draft.timezone ?? getClientTimezone();
 
-  function handleOfferType(offerType: OfferType) {
-    if (offerType === 'private' && privateService) {
+  function handleOfferType(offerType: OfferType, serviceId?: string) {
+    if (offerType === 'private') {
+      const selected = (serviceId && services.find((s) => s.id === serviceId)) || privateService;
+      if (!selected) return;
       dispatch(
         updateBookingDraft({
           offerType,
-          serviceId: privateService.id,
-          deliveryType: privateService.deliveryType === 'hybrid' ? 'online' : privateService.deliveryType,
+          serviceId: selected.id,
+          deliveryType: selected.deliveryType === 'hybrid' ? 'online' : selected.deliveryType,
         }),
       );
       dispatch(setWizardStep('datetime'));
@@ -266,7 +272,7 @@ export function BookingWizard({
       {step === 'offerType' && draft.category && (
         <OfferTypeStep
           category={draft.category}
-          privateService={privateService}
+          privateServices={privateServices}
           onSelect={handleOfferType}
           onBack={() => dispatch(setWizardStep('category'))}
         />

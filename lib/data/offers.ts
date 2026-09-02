@@ -12,6 +12,7 @@ import type { AvailabilityRuleInput } from '@/lib/domain/availability';
 
 export const CODING_TUTORING_ID = '00000000-0000-4000-8000-000000000001';
 export const STRIKING_TRAINING_ID = '00000000-0000-4000-8000-000000000002';
+export const ASS_WHOOPING_ID = '00000000-0000-4000-8000-000000000003';
 
 export const LOCAL_OFFERS: BookableService[] = [
   {
@@ -49,6 +50,23 @@ export const LOCAL_OFFERS: BookableService[] = [
     preparationInstructions: 'Wear athletic clothing and bring water. Hand wraps and gloves can be provided if you don’t have your own.',
     requiresWaiver: true,
   },
+  {
+    id: ASS_WHOOPING_ID,
+    slug: 'ass-whooping-package',
+    name: '$50 Ass-Whooping Package',
+    shortDescription: 'You step in. Pads go on. Abel gets to work. You leave sweaty, humbled, and grinning.',
+    fullDescription:
+      'I open a can of whoop ass. Austin 3:16.',
+    category: 'combat',
+    durationMinutes: 60,
+    priceCents: 5000,
+    priceUnit: 'session',
+    deliveryType: 'in-person',
+    maxParticipants: 1,
+    imageUrl: null,
+    preparationInstructions: 'Wear athletic clothing and bring water. Hand wraps and gloves can be provided if you don’t have your own. Bring your ego — you’ll need it, then you’ll lose it.',
+    requiresWaiver: true,
+  },
 ];
 
 export const LOCAL_OFFER_LOCATIONS: Record<string, { online?: string; 'in-person'?: string }> = {
@@ -57,6 +75,9 @@ export const LOCAL_OFFER_LOCATIONS: Record<string, { online?: string; 'in-person
     'in-person': 'Exact address or meeting point is shared after booking, based on your general location.',
   },
   [STRIKING_TRAINING_ID]: {
+    'in-person': 'Exact address or meeting point is shared after booking, based on your general location.',
+  },
+  [ASS_WHOOPING_ID]: {
     'in-person': 'Exact address or meeting point is shared after booking, based on your general location.',
   },
 };
